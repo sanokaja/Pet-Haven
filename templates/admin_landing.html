@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Haven</title>
+    <link rel='stylesheet' href='static/css/admin_landing.css'>
+</head>
+
+<body>
+    <header>
+        <h1>Pet Haven</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="{{url_for('admin')}}">Canine Commerce</a>
+        <a href="{{ url_for('admin_services') }}">Dog Spa and Management</a>
+        <a href="{{ url_for('admin_events') }}">Dog Competitions</a>
+        <a href="/admin_dashboard">Customer Requests</a>
+        <a href="/admin_dashboard">Service Provider Approvals</a>
+    </nav>
+
+    <div class="hero">
+        <h2>Welcome to Pet Haven</h2>
+        <p class="typewriter-text">Your one-stop destination for all things pet-related!</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <img src="../static/image/canine_commerce.jpg" alt="Canine Commerce">
+            <h3>Canine Commerce</h3>
+            <p>Edit dog sales</p>
+            <a href="{{url_for('admin')}}">Edit Now</a>
+        </div>
+
+        <div class="card">
+            <img src="../static/image/dog_spa.jpg" alt="Dog Spa">
+            <h3>Dog Spa Booking</h3>
+            <p>Edit spa bookings</p>
+            <a href="{{ url_for('admin_services') }}">Edit Now</a>
+        </div>
+
+        <div class="card">
+            <img src="../static/image/dog_competitions.jpg" alt="Dog Competition">
+            <h3>Dog Competition</h3>
+            <p>Edit competitions</p>
+            <a href="{{ url_for('admin_events') }}">Edit Now</a>
+        </div>
+
+        <div class="card">
+            <img src="../static/image/approval.jpg" alt="Approvals">
+            <h3>Customer Requests and Service Provider Approvals</h3>
+            <p>Approve or reject requests</p>
+            <a href="/admin_dashboard">Check Now</a>
+
+        </div>
+        <div class="card">
+            <img src="../static/image/analytic1.jpeg" alt="Approvals">
+            <h3>Revenue</h3>
+            <p>analytics</p>
+            <a href="{{ url_for('admin_ana') }}">Check Now</a>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Pet Haven</p>
+    </footer>
+</body>
+
+</html>

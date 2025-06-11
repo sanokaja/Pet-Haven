@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+
+        .cart-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .item-details {
+            flex: 1;
+            margin: 10px;
+        }
+
+        .item-name {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .item-price {
+            color: #b12704;
+            margin-top: 5px;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-input {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        .remove-button {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 1.5px;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: right;
+        }
+
+        .checkout-button {
+            background-color: #ffa41c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .shop-more {
+            background-color: black;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+        .empty-cart-message {
+            font-size: 1.2em;
+            color: #555;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cart-container">
+        <div class="cart-header">Shopping Cart</div>
+        {% if not cart_items %}
+        <div class="empty-cart-message">Your cart is empty.</div>
+        <button class="continue-shopping-button" onclick="window.location.href='/trainer/Grooming_Service';">Continue
+            Shopping</button>
+        {%else%}
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <img src="{{ url_for('static', filename='images/trainer' ~ item.service_provider_id ~'.jpg') }}" alt=""
+                height="10%" width="10%">
+
+
+            <div class="item-details">
+                <div class="item-name">{{ item.name }}</div>
+                <div class="item-price">{{ item.cost }} Rs</div>
+            </div>
+            <div class="item-actions">
+
+                <a href="/delete_to_cart/{{item.service_provider_id}}"><button class="remove-button">Remove</button></a>
+                <a href="/booking?provider_id={{item.service_provider_id}}&service_id={{item.service_provided_id}}"><button
+                        class="remove-button">Show
+                        item</button></a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="cart-summary">
+            <h4>Item Cost: {{cart_cost}} Rs</h4>
+            <h4>Taxes: {{taxes}} Rs</h4>
+            <h4>Total Amount: {{total_amount}} Rs</h4>
+            <button class="checkout-button">Proceed to Checkout</button>
+            <a href="/trainer"><button class="shop-more">Shop More</button></a>
+        </div>
+        {%endif%}
+    </div>
+</body>
+
+</html>

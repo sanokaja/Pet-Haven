@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Haven - Service Provider Dashboard</title>
+    <link rel='stylesheet' href='static/css/ser_pro.css'>
+</head>
+<body>
+    <header>
+        <h1>Pet Haven - Service Provider Dashboard</h1>
+        <div class="switch-button">
+            <button  onclick="window.location.href='{{ url_for('edit_request') }}'";>Edit Details</button>
+        </div>
+    </header>
+    <nav>
+        <a href="{{url_for('service_provider_landing')}}">Home</a>
+        <a href="{{url_for('services')}}">Dog Spa and Management</a>
+        <div class="user-profile">
+            <img src="../image/user_icon.png" alt="User">
+            <span>Welcome,{{ user_name }}</span>
+            <div class="dropdown">
+                <a href="#">Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <section>
+            <h2>Upcoming Bookings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Date</th>
+                        <th>Booking Time</th>
+                        <th>Service</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>15-01-2025</td>
+                        <td>10:00 AM</td>
+                        <td>Grooming</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>16-01-2025</td>
+                        <td>2:00 PM</td>
+                        <td>Training</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

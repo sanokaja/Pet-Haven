@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Haven - Admin Dashboard</title>
+    <script src="static/js/script.js" defer></script>
+    <link rel='stylesheet' href='static/css/admin_dashboard.css'>
+</head>
+
+<body>
+    <header>
+        <h1>Pet Haven - Admin Dashboard</h1>
+    </header>
+    <script>
+        function handleAccept() {
+            alert('Customer accepted and email sent.');
+        }
+    
+        function handleReject() {
+            alert('Customer rejected and mail sent.');
+        }
+    </script>
+    
+   
+    <nav>
+        <a href="/admin_landing">Home</a>
+        <a href="{{url_for('admin')}}">Canine Commerce</a>
+        <a href="{{url_for('admin_services')}}">Dog Spa and Management</a>
+        <a href="{{url_for('admin_events')}}">Dog Competitions</a>
+        
+        <div class="user-profile">
+            <img src="../static/image/user_icon.png" alt="User">
+            <span>Admin</span>
+            <div class="dropdown">
+                <a href="#">Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <!-- Customer Requests Table -->
+        <section>
+            <h2>Customer Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email Address</th>
+                        <th>Phone Number</th>
+                        <th>Service Type</th>
+                        <th>ID Proof</th>
+                        <th>Qualification</th>
+                        <th>Certification</th>
+                        <th>Experience</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for submission in submissions %}
+                    <tr id="row-{{ submission.id }}">
+                        <td>{{ submission.full_name }}</td>
+                        <td>{{ submission.email }}</td>
+                        <td>{{ submission.phone }}</td>
+                        <td>{{ submission.service_requested }}</td>
+                        <td>
+                            {% if submission.id_proof %}
+                                <a href="{{ url_for('uploaded_file', filename=submission.id_proof.split('/')[-1]) }}" target="_blank">View ID Proof</a>
+                            {% else %}
+                                No ID Proof
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if submission.qualification %}
+                                <a href="{{ url_for('uploaded_file', filename=submission.qualification.split('/')[-1]) }}" target="_blank">View Qualification</a>
+                            {% else %}
+                                No Qualification
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if submission.certification %}
+                                <a href="{{ url_for('uploaded_file', filename=submission.certification.split('/')[-1]) }}" target="_blank">View Certification</a>
+                            {% else %}
+                                No Certification
+                            {% endif %}
+                        </td>
+                        <td>{{ submission.experience }}</td>
+                        <td>
+                        <button 
+                            onclick="handleAcceptNotification('{{ submission.email }}', '{{ submission.full_name }}', '{{ submission.service_requested }}')" 
+                            class="action-btn pending">
+                            Accept
+                        </button>
+                        <button 
+                            onclick="handleRejectNotification('{{ submission.email }}', '{{ submission.full_name }}', '{{ submission.service_requested }}')" 
+                            class="action-btn reject">
+                            Reject
+                        </button>
+                        <form action="{{ url_for('delete_submission', index=loop.index0) }}" method="POST" style="display:inline;">
+                            <button onclick="deleteSubmission('{{ submission.id }}')" class="action-btn delete">
+                                Delete
+                            </button>
+                        </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+        </section>
+        <script>
+            function sendNotificationEmail(email, fullName, serviceRequested, action) {
+                fetch('/send_notification_email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        full_name: fullName,
+                        service_requested: serviceRequested,
+                        action: action
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(`${action}ed and notification email sent.`);
+                    } else {
+                        alert(`Failed to send notification email: ${data.error}`);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        
+            function handleAcceptNotification(email, fullName, serviceRequested) {
+                sendNotificationEmail(email, fullName, serviceRequested, "accept");
+            }
+        
+            function handleRejectNotification(email, fullName, serviceRequested) {
+                sendNotificationEmail(email, fullName, serviceRequested, "reject");
+            }
+        </script>
+        
+        <section>
+            <h2>Service Provider Details</h2>
+            <table id="service-provider-table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email Address</th>
+                        <th>Service Type</th>
+                        <th>Location</th>
+                        <th>Hourly Rate</th>
+                        <th>Certifications</th>
+                        <th>Experience</th>
+                        <th>Government ID Proof</th>
+                        <th>Educational Qualification Certificates</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </section>
+        
+        <script>
+            // Fetch service provider data from the backend
+    function loadServiceProviders() {
+        fetch('/get-service-providers')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const serviceProviders = data.data;
+                    const tableBody = document.querySelector('#service-provider-table tbody');
+                    tableBody.innerHTML = ''; // Clear existing data
+
+                    serviceProviders.forEach((provider) => {
+                        const row = document.createElement('tr');
+                        row.id = `row-${provider.id}`; // Ensure row has correct ID
+                        row.innerHTML = `
+                            <td>${provider.fullname}</td>
+                            <td>${provider.email}</td>
+                            <td>${provider.service_type || 'N/A'}</td>
+                            <td>${provider.location || 'N/A'}</td>
+                            <td>${provider.hourly_rate || 'N/A'}</td>
+                            <td>${provider.certifications || 'N/A'}</td>
+                            <td>${provider.experience || 'N/A'} years</td>
+                            <td>
+                                ${provider.id_proof_path 
+                                    ? `<a href="/uploads/${provider.id_proof_path}" target="_blank">View Document</a>` 
+                                    : 'No Document'}
+                            </td>
+                            <td>
+                                ${provider.qualification_path 
+                                    ? `<a href="/uploads/${provider.qualification_path}" target="_blank">View Document</a>` 
+                                    : 'No Document'}
+                            </td>
+                            <td>
+                                <button onclick="handleAcceptNotification('${provider.email}', '${provider.fullname}', '${provider.service_type || 'N/A'}')" 
+                                    class="action-btn accept">Accept</button>
+                                <button onclick="handleRejectNotification('${provider.email}', '${provider.fullname}', '${provider.service_type || 'N/A'}')" 
+                                    class="action-btn reject">Reject</button>
+                                <button onclick="deleteSubmission(${provider.id})" class="action-btn delete">Delete</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    alert(`Failed to load service providers: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching service providers:', error);
+                alert('An error occurred while fetching service providers.');
+            });
+    }
+
+
+function deleteSubmission(userId) {
+    console.log("Deleting user with ID:", userId); // Debugging
+    if (!userId) {
+        alert("Error: User ID is undefined.");
+        return;
+    }
+
+    const confirmation = confirm("Are you sure you want to delete this service provider?");
+    if (!confirmation) return;
+
+    fetch(`/delete_fromservice_providertable/${userId}`, { 
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            // Remove the row from the table
+            const row = document.querySelector(`#row-${userId}`);
+            if (row) {
+                row.remove();
+            }
+        } else {
+            alert(`Failed to delete user: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the user.');
+    });
+}
+
+
+            // Send notification email 
+            function sendNotificationEmail(email, fullName, serviceRequested, action, password = '') {
+                fetch('/send_notification_email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        full_name: fullName,
+                        service_requested: serviceRequested,
+                        action: action,
+                        password: password,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(`${action.charAt(0).toUpperCase() + action.slice(1)}ed and notification email sent.`);
+                    } else {
+                        alert(`Failed to send notification email: ${data.error}`);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // Handle accept notification
+            function handleAcceptNotification(email, fullName, serviceRequested) {
+            // Generating a unique password here (you can adjust this logic)
+                const username = email; // Using email as the username
+                const password = Math.random().toString(36).slice(-8); // Generate a random password of 8 characters
+
+                // Sending email notification and user credentials (email and password) to the service provider
+                sendNotificationEmail(email, fullName, serviceRequested, "accept", password);
+            }
+
+            // Handle reject notification
+            function handleRejectNotification(email, fullName, serviceRequested) {
+                sendNotificationEmail(email, fullName, serviceRequested, "reject");
+            }
+
+            // Load service provider data on page load
+            document.addEventListener('DOMContentLoaded', loadServiceProviders);
+        </script>
+
+   
+
+    <!-- Delete Confirmation Popup -->
+    <div id="deleteConfirmationPopup" class="popup">
+        <div class="popup-content">
+            <h3>Are you sure you want to delete this service provider?</h3>
+            <button onclick="deleteProvider()">Yes</button>
+            <button onclick="closePopup()">No</button>
+        </div>
+    </div>
+
+</body>
+</html>

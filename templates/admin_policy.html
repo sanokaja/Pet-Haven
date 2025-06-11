@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
+</head>
+<body>
+    <h1>Our Policies</h1>
+    <p>Below are the policies related to dog purchase, shipping, and medical care.</p>
+
+    <div class="policy-section">
+        <h2>1. Purchase Policy</h2>
+        <ul>
+            <li>All sales are final. Ensure you choose the right breed for your needs.</li>
+            <li>We provide a certificate of authenticity for purebred dogs.</li>
+            <li>Customers must be at least 18 years old to purchase a dog.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h2>2. Shipping Policy</h2>
+        <ul>
+            <li>Shipping is available only within specified regions. Check availability at checkout.</li>
+            <li>All dogs are shipped with proper care and in accordance with animal welfare standards.</li>
+            <li>Shipping costs vary depending on location and breed size.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h2>3. Medical Policy</h2>
+        <ul>
+            <li>All dogs come with an initial health checkup certificate.</li>
+            <li>Vaccination and deworming are completed before delivery.</li>
+            <li>Customers are advised to follow up with their local vet for routine checkups.</li>
+        </ul>
+    </div>
+
+    <a href="{{ url_for('view_admin_cart') }}">Back to Dog Cart</a>
+</body>
+</html>

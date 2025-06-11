@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply as Service Provider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel='stylesheet' href='static/css/apply.css'>
+    <script>
+        function validateForm(event) {
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const experience = document.getElementById("experience").value;
+
+            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+            if (!emailPattern.test(email) || !email.includes(".com")) {
+                alert("Please enter a valid email address with '@' and '.com'.");
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^[0-9]+$/.test(phone)) {
+                alert("Phone number should only contain digits.");
+                event.preventDefault();
+                return false;
+            }
+
+            if (!experience.trim()) {
+                alert("Relevant Experience is mandatory.");
+                event.preventDefault();
+                return false;
+            }
+
+            alert("Application submitted successfully!");
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1><a href="landing_page.html" style="color: white; text-decoration: none;">Pet Haven</a></h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('cannine_home') }}">Canine Commerce</a>
+        <a href="{{ url_for('services') }}">Dog Spa and Management</a>
+        <a href="{{ url_for('competition_page') }}">Dog Competitions</a>
+    </nav>
+    <div class="container mt-5">
+        <h2 class="text-center">Apply as Service Provider</h2>
+        <form action="/submit_application" method="POST" enctype="multipart/form-data" onsubmit="return validateForm(event)">
+            <div class="mb-3">
+                <label for="fullName" class="form-label required">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="full_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label required">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label required">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required>
+            </div>
+            <div class="mb-3">
+                <label for="serviceRequested" class="form-label required">Service Requested</label>
+                <select class="form-select" id="serviceRequested" name="service_requested" required>
+                    <option value="" disabled selected>Select a service</option>
+                    
+                    <option value="Pet Grooming">Pet Grooming</option>
+                    <option value="Training Classes">Training Classes</option>
+                    
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="idProof" class="form-label required">ID Proof</label>
+                <input type="file" class="form-control" id="idProof" name="id_proof" accept=".pdf,.png,.jpg,.jpeg" required>
+            </div>
+            <div class="mb-3">
+                <label for="qualification" class="form-label required">Qualifications</label>
+                <input type="file" class="form-control" id="qualification" name="qualification" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" required>
+            </div>
+            <div class="mb-3">
+                <label for="certification" class="form-label">Certifications</label>
+                <input type="file" class="form-control" id="certification" name="certification" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+            </div>
+            <div class="mb-3">
+                <label for="experience" class="form-label required">Relevant Experience</label>
+                <textarea class="form-control" id="experience" name="experience" rows="3" required></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Application</button>
+            </div>
+        </form>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <p>Pet Haven</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

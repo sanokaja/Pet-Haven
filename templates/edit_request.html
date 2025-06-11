@@ -1,0 +1,253 @@
+<!-- templates/edit_request.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Edit Request</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Navbar background color */
+    .navbar {
+        background-color: #ffec9f;
+      }
+  
+      /* Brand name styling */
+      .navbar-brand {
+        color: white !important;
+        font-weight: bold;
+      }
+  
+      /* Navbar links and icons */
+      .navbar-nav .nav-link,
+      .nav-icons i {
+        color: white !important;
+      }
+  
+           /* Transparent Home button with white border */
+    .navbar-nav .nav-item:first-child .nav-link {
+        background-color: transparent;
+        border: 2px solid white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        transition: all 0.3s ease;
+      }
+  
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #faf0c4;
+      }
+  
+      /* Hover effect for the Home button */
+      .navbar-nav .nav-item:first-child .nav-link:hover {
+        background-color: white;
+        color: #ffec9f !important;
+      }
+  
+      /* General hover effect for other links */
+      .navbar-nav .nav-link:hover {
+        text-decoration: underline;
+      }
+  
+      /* Nav icons hover effect */
+      .nav-icons i:hover {
+        opacity: 0.8;
+      }
+  
+      /* White hamburger icon */
+      .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.5);
+        /* White border */
+      }
+  
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+      }
+        .form-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        body {
+            background-color: #fae481;;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        
+        .btn-submit {
+            padding: 10px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .alert {
+            margin-top: 20px;
+        }
+        .parallax {
+            background-image: url("{{ url_for('static', filename='images/trainers/output3.jpg') }}");
+            height: 400px;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+          }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <h3>Pet Haven</h3>
+          </a>
+          <!-- Hamburger Button -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('service_provider')}}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('trainer_services')}}">Dog Spa and Management</a>
+              </li>
+             
+            </ul>
+            <div class="nav-icons">
+              <i class="fas fa-user p-2"></i>
+    
+             
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="container-fluid m-0">
+        <div class="parallax p-5">
+          <h1 class="display-4 pt-15" style="color: #181938;"><b>Welcome to the Edit Request page </b></h1>
+          <p class="lead" style="color: #eeeef3;"><strong> We provide the best services for your pets. Choose from a variety
+            of services and trainers to keep your pets healthy and happy.</strong>
+          </p>
+          
+        </div>
+    <div class="container" style="background-color: #fae481;">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h1 class="text-center mb-4">Trainer Edit Request</h1>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                            <div class="invalid-feedback">Please provide your full name.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback">Please provide a valid email.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <div class="invalid-feedback">Please provide a password.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="service_type" class="form-label">Service Type</label>
+                            <input type="text" class="form-control" id="service_type" name="service_type" required>
+                            <div class="invalid-feedback">Please specify the service type.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" required>
+                            <div class="invalid-feedback">Please provide your location.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hourly_rate" class="form-label">Hourly Rate</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="hourly_rate" name="hourly_rate" step="0.01" min="0" required>
+                                <div class="invalid-feedback">Please specify your hourly rate.</div>
+                            </div>
+                        </div>
+
+                      <div class="mb-3">
+                          <label for="certifications" class="form-label">Upload Certificate Documents (PDF only)</label>
+                          <input type="file" class="form-control" id="certifications" name="certifications" accept=".pdf" multiple required>
+                          <div class="invalid-feedback">Please upload your certificate documents.</div>
+                          <small class="form-text text-muted">You can select multiple PDF files. Maximum file size: 20MB each.</small>
+                      </div>
+
+                        <div class="mb-3">
+                            <label for="experience" class="form-label">Experience</label>
+                            <textarea class="form-control" id="experience" name="experience" rows="3" required></textarea>
+                            <div class="invalid-feedback">Please describe your experience.</div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-submit" style="background-color: #f3cb2c; color:white; border-color:#f3cb2c">Submit Edit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and form validation script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation script
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</body>
+</html>

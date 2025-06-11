@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: rgb(4, 50, 105);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgb(4, 53, 105);
+            color: white;
+            font-size: 18px;
+        }
+
+        td {
+            font-size: 16px;
+        }
+
+        .total-price {
+            font-size: 1.5em;
+            text-align: right;
+            padding: 20px;
+            border-top: 2px solid #ddd;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 90%;
+            margin: 20px auto;
+            padding: 15px;
+            text-align: center;
+            background-color: rgb(4, 55, 105 );
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: rgb(31, 2, 68);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Your Cart
+        </div>
+
+        <!-- Add to Cart Form -->
+        <form method="POST" action="{{ url_for('add_item_to_cart') }}">
+            <!-- You can replace the 'registration_id' with the appropriate ID from your context -->
+            <label for="registration_id">Registration ID:</label>
+            <input type="text" name="registration_id" required>
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+        </form>
+
+        <!-- Table displaying all the registrations in the cart -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Registration ID</th>
+                    <th>Event Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in cart_entries %}
+                    <tr>
+                        <td>{{ entry.id }}</td>
+                        <td>{{ entry.registration_id }}</td>
+                        <td>{{ entry.registration.competition_name }}</td>
+                        <td>₹{{ entry.price }}</td>
+                        <td>
+                            <form action="/remove_from_cart/{{ entry.id }}" method="post" style="display:inline;">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Total price -->
+        <div class="total-price">
+            Total Price: ₹{{ total_price }}
+        </div>
+
+        <!-- Checkout Button -->
+        <a href="{{ url_for('checkout_event') }}" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+</body>
+</html>

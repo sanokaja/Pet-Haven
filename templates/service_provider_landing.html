@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Haven</title>
+    <link rel='stylesheet' href='static/css/service_land.css'>
+</head>
+
+<body>
+    <header>
+        <h1>Pet Haven</h1>
+        <div class="switch-button">
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="dog_spa.html">Dog Spa Services</a>
+        <a href="service_provider.html">Service Requests</a>
+
+        <div class="user-profile">
+            <img src="{{ url_for('static', filename='image/user_icon.png') }}" alt="User">
+            <span id="welcome-text">Welcome, {{ user_name }}</span> <!-- Display the service provider's name -->
+            <div class="dropdown">
+                <a href="{{ url_for('logout') }}">Logout</a> <!-- Ensure logout works -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h2>Welcome to Pet Haven</h2>
+        <p class="typewriter-text">Your one-stop destination for all things pet-related!</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <img src="../static/image/dog_spa.jpg" alt="Dog Spa">
+            <h3>Dog Spa Services</h3>
+            <p>Edit spa Services</p>
+            <a href="{{ url_for('trainer_services') }}">Edit Now</a>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='image/dog_competitions.jpg') }}" alt="Dog Competition">
+            <h3>Service Requests</h3>
+            <p>Accept or reject service requests</p>
+            <a href="{{ url_for('service_provider') }}">Check Now</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Pet Haven</p>
+    </footer>
+
+    <!-- JavaScript for Dropdown -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let welcomeText = document.getElementById("welcome-text");
+            let dropdown = document.querySelector(".dropdown");
+
+            // Toggle dropdown when clicking "Welcome"
+            welcomeText.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevent closing when clicking "Welcome"
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            });
+
+            // Keep dropdown open when hovering over it
+            dropdown.addEventListener("mouseenter", function () {
+                dropdown.style.display = "block";
+            });
+
+            dropdown.addEventListener("mouseleave", function () {
+                dropdown.style.display = "none";
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!welcomeText.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f6; /* White background for the page */
+    
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #306ff6b1; /* Remove background color */
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to differentiate from body */
+}
+
+.navbar-brand {
+    font-size: 2.5rem; /* Larger font size for navbar title */
+    font-weight: bold;
+    color: rgba(234, 231, 231, 0.349); /* Set text color to black */
+}
+
+/* Container Styling */
+.container {
+    width: 50%;
+    background-color: #090254; /* White background for the central box */
+    padding: 2rem;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* Bigger shadow for depth */
+    text-align: center;
+    border: 2px solid #4540d4;
+    margin-top: 100px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect for Container */
+.container:hover {
+    transform: translateY(-10px); /* Slight lift effect on hover */
+}
+
+/* Title Styling */
+.container h1 {
+    margin-bottom: 1.5rem;
+    color: #f0eded;
+    font-size: 2.4rem; /* Larger title */
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Form Styling */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Name Row Styling */
+.name-row {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+}
+
+/* Input Fields Styling */
+input, textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Prevents input fields from going out of bounds */
+    transition: border-color 0.3s ease;
+}
+
+/* Input Focus Effect */
+input:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none; /* Removes default outline */
+}
+
+/* Textarea Specific Styling */
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+/* Next Button Styling */
+.next-button {
+    align-self: flex-end;
+    padding: 0.8rem 1.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .name-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+.navbar-nav .nav-link {
+    font-size: 1.1rem;
+    color: black; /* Change navbar text color to black */
+    margin-left: 1.5rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff; /* Change hover color to blue */
+}

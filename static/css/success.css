@@ -1,0 +1,118 @@
+body {
+    background-color: #f0f8ff; /* Light blue background */
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+h2, h3 {
+    color: #2c3e50; /* Dark blue for headings */
+    font-weight: 600;
+}
+
+table {
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #3498db; /* Blue header */
+    color: #ffffff;
+}
+
+.table td {
+    background-color: #ecf0f1; /* Light gray background for table cells */
+}
+
+.btn-custom {
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 50px;
+    width: 48%;
+    transition: 0.3s;
+}
+
+.btn-custom:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #ff6347; /* Tomato red */
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e74c3c;
+}
+
+.btn-success {
+    background-color: #2ecc71; /* Green */
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+}
+
+.pricing-summary {
+    background-color: #e2ca68; /* Yellow background for pricing summary */
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    color: black;
+}
+
+.pricing-summary p {
+    font-weight: 500;
+}
+
+.thank-you {
+    font-size: 20px;
+    font-weight: 500;
+    color: #8e44ad; /* Purple color for success message */
+}
+
+.thank-you p {
+    font-size: 16px;
+    color: #34495e;
+}
+
+.d-flex {
+    margin-top: 30px;
+}
+
+.header-section {
+    background-color: #9b59b6; /* Purple background for the header */
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+    color: #ffffff;
+}
+
+.header-section h2 {
+    margin-bottom: 0;
+}
+
+.footer {
+    background-color: #f39c12; /* Yellow footer */
+    padding: 15px;
+    text-align: center;
+    margin-top: 30px;
+    border-radius: 0 0 12px 12px;
+    color: white;
+}
+
+.footer p {
+    margin: 0;
+}

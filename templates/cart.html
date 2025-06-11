@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+    <title>Shopping Cart</title>
+
+    <style>
+        .empty-cart-message {
+            padding: 20px;
+            background-color: #f8d7da;
+            border-radius: 8px;
+            color: #721c24;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .empty-cart-message h3 {
+            margin-bottom: 15px;
+        }
+
+        .go-home-btn {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .go-home-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            display: none; /* Initially hidden */
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s, fadeOut 0.5s 4.5s; /* Animation */
+        }
+
+        .notification-success {
+            background: linear-gradient(90deg, #4caf50, #81c784);
+        }
+
+        .notification-error {
+            background: linear-gradient(90deg, #f44336, #e57373);
+        }
+
+        /* Keyframes for fade in and fade out */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .notification-icon {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Shopping Cart</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('home')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cannine_home') }}">
+                            Dogs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('policy') }}">Our Policy</a>
+                    <i>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notification Area -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="notification" class="alert notification-success" role="alert">
+                <span class="notification-icon">✅</span> <!-- Success Icon -->
+                {% for category, message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top : 80px;">
+        {% if not (cart_data_2 or cart_data_3 or cart_data_4) %}
+        <div class="empty-cart-message">
+            <h3>Your cart is empty.</h3>
+            <p>Please add some items to your cart.</p>
+            <a href="{{ url_for('home') }}" class="go-home-btn">Go to Home</a>
+        </div>
+        {% else %}
+        <div class="cart-items">
+            {% for item in cart_data_2 %}
+            <div class="cart-item">
+                <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.name }}">
+                <h3>{{ item.name }}</h3>
+                <p class="price">{{ item.price }} Rs</p>
+                <!-- Updated form for delete -->
+                <a href="/delete_from_cart/{{item.id}}"><button class="delete-button">Delete</button></a>
+                <!-- <form action="{{ url_for('delete_from_cart', cart_item_id=item.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form> -->
+                
+            </div>
+            {% endfor %}
+            {% for item in cart_data_3 %}
+            <div class="cart-items">
+    
+    
+                <div class="cart-item">
+                    <!-- <h1>{{item.service_provider_id}}</h1> -->
+                    <img src="{{ url_for('static', filename='images/trainers/trainer'~item.service_provider_id~'.jpg') }}" alt="{{ item.name }}">
+                    <h3>{{ item.name }}</h3>
+                    <p class = "price">{{ item.cost }} Rs</p>
+                    <div class="booking-time">Booking time :{{ item.booking_time}}</div>
+                    <div class="booking-date">Booking Date: {{ item.booking_date}}</div>
+                        <a href="/delete_to_cart/{{item.id}}"><button type="submit" class="delete-button">Delete</button></a>
+                </div>
+                <!-- <div class="item-actions">
+    
+                    <a href="/delete_to_cart/{{item.id}}"><button class="remove-button">Remove</button></a>
+                    <a href="/booking?provider_id={{item.service_provider_id}}&service_id={{item.service_provided_id}}"><button
+                            class="remove-button">Show
+                            item</button></a>
+                </div> -->
+            </div>
+            {% endfor %}
+            {% for item in cart_data_4 %}
+            <div class="cart-items">
+    
+                <div class="cart-item">
+                    <!-- <h1>{{item.service_provider_id}}</h1> -->
+                    <img src="{{ url_for('static', filename='images/competions/agility.jpeg') }}" alt="{{ item.name }}">
+                    <div class="item-name">{{ item.name }}</div>
+                    <div class="price">{{ item.cost }} Rs</div>
+                        <a href="/remove_from_cart/{{item.id}}"><button type="submit" class="delete-button">Delete</button></a>
+                </div>
+                <!-- <div class="item-actions">
+    
+                    <a href="/delete_to_cart/{{item.id}}"><button class="remove-button">Remove</button></a>
+                    <a href="/booking?provider_id={{item.service_provider_id}}&service_id={{item.service_provided_id}}"><button
+                            class="remove-button">Show
+                            item</button></a>
+                </div> -->
+            </div>
+            {% endfor %}
+            
+        </div>
+        
+        <!-- Billing Details -->
+        <div class="order-summary-container">
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <p>Subtotal: {{ subtotal }} Rs</p>
+                <p>Shipping: {{ shipping }} Rs</p>
+                <p>GST: {{ gst }} Rs</p>
+                <p>SGST: {{ sgst }} Rs</p>
+                <p class="total">Total: {{ total }} Rs</p>
+
+                <!-- Link to Shipping Page -->
+                <a href="{{ url_for('shipping_details') }}" class="btn btn-primary">Checkout</a><br/><br/>
+                <a href="{{ url_for('cannine_home') }}" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show notification if it exists
+        var notification = document.getElementById('notification');
+        if (notification) {
+            notification.style.display = 'block';
+            // Hide notification after a few seconds
+            setTimeout(function() {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

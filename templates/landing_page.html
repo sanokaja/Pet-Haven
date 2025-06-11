@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Haven</title>
+    <link rel='stylesheet' href='static/css/landing.css'>
+</head>
+
+<body>
+    <header>
+        <h1>Pet Haven</h1>
+        <div class="switch-button">
+            <a href="{{ url_for('apply') }}" class="switch-button-link yellow">Switch as Service Provider</a>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+        <div class="user-profile">
+            <img src="{{ url_for('static', filename='image/user_icon.png') }}" alt="User">
+            <span>Welcome, {{ user_name }}</span> <!-- Display the logged-in user's name -->
+            <div class="dropdown">
+                <a href="#">Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a> <!-- Ensure logout functionality exists -->
+            </div>
+        </div>
+        
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h2>Welcome to Pet Haven</h2>
+        <p class="typewriter-text">Your one-stop destination for all things pet-related!</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <img src="{{ url_for('static', filename='Image/canine_commerce.jpg') }}" alt="Canine Commerce">
+            <h3>Canine Commerce</h3>
+            <p>Discover and purchase your next furry companion.</p>
+            <a href="{{ url_for('cannine_home') }}">Explore Now</a>
+
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='Image/dog_spa.jpg') }}" alt="Dog Spa">
+            <h3>Dog Spa Booking</h3>
+            <p>Book and manage luxurious spa sessions for your pet.</p>
+            <a href="{{ url_for('services') }}">Book a Session</a>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='Image/dog_competitions.jpg') }}" alt="Dog Competition">
+            <h3>Dog Competition</h3>
+            <p>Register and schedule your pet for exciting competitions.</p>
+            <a href="{{ url_for('competition_page') }}">Register Now</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>Pet Haven</p>
+    </footer>
+</body>
+
+</html>

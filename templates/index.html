@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Register</title>
+  <link rel='stylesheet' href='static/css/index.css'>
+</head>
+<body>
+
+<div class="container">
+  <h1 id="page-title">Welcome Back</h1>
+  <p id="page-subtitle">Login to access your PetCare account</p>
+
+  <div id="toggle-buttons" class="toggle-buttons">
+    <button id="login-btn" class="active" onclick="toggleForm('login')">Login</button>
+    <button id="register-btn" onclick="toggleForm('register')">Register</button>
+  </div>
+
+  <!-- Login Form -->
+<form id="login-form" class="active">
+  <div class="form-group">
+    <label for="role">Login as <span style="color: red;">*</span></label>
+    <select id="role" required>
+      <option value='customer'>Customer</option>
+      <option value='service-provider'>Service Provider</option>
+      <option value='admin'>Admin</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="login-email">Email <span style="color: red;">*</span></label>
+    <input type="email" id="login-email" placeholder="Enter your email" required>
+  </div>
+  <div class="form-group">
+    <label for="login-password">Password <span style="color: red;">*</span></label>
+    <input type="password" id="login-password" placeholder="" required>
+  </div>
+  <div class="remember-me">
+    <div>
+      <input type="checkbox" id="remember-me">
+      <label for="remember-me">Remember me</label>
+    </div>
+    <a href="#" style="text-decoration: none; color: #007bff;" onclick="toggleForm('forgot-password')">Forgot password?</a>
+  </div>
+  <button type="submit" class="submit-btn" onclick="login()">Login</button>
+</form>
+
+<!-- Register Form -->
+<form id="register-form" action="/register" method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="role-select">Register as <span style="color: red;">*</span></label>
+    <select id="role-select" onchange="toggleFields()" required>
+      <option value="customer">Customer</option>
+      <option value="service-provider">Service Provider</option>
+    </select>
+  </div>
+
+  <!-- Common Fields: Full Name and Email -->
+  <div id="common-fields">
+    <div class="form-group">
+      <label for="reg-name">Full Name <span style="color: red;">*</span></label>
+      <input type="text" id="reg-name" placeholder="Enter your name" required>
+    </div>
+    <div class="form-group">
+      <label for="reg-email">Email <span style="color: red;">*</span></label>
+      <input type="email" id="reg-email" placeholder="Enter your email" required>
+    </div>
+  </div>
+
+  <!-- Customer-Specific Fields: Password Fields -->
+  <div id="customer-fields">
+    <div class="form-group">
+      <label for="reg-password">Set Password <span style="color: red;">*</span></label>
+      <input type="password" id="reg-password" placeholder="Enter password" required>
+    </div>
+    <div class="form-group">
+      <label for="confirm-password">Confirm Password <span style="color: red;">*</span></label>
+      <input type="password" id="confirm-password" placeholder="Confirm password" required>
+    </div>
+  </div>
+
+  <!-- Service Provider-Specific Fields -->
+  <div id="service-provider-fields" style="display: none;">
+    <div class="form-group">
+      <label for="service-type">Service Type <span style="color: red;">*</span></label>
+      <select id="service-type" required>
+        <option value="grooming">Grooming</option>
+        <option value="training">Training</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="location">Location <span style="color: red;">*</span></label>
+      <input type="text" id="location" placeholder="Enter your location" required>
+    </div>
+    <div class="form-group">
+      <label for="hourly-rate">Hourly Rate <span style="color: red;">*</span></label>
+      <input type="number" id="hourly-rate" placeholder="Enter hourly rate" required>
+    </div>
+    <div class="form-group">
+      <label for="certifications">Certifications</label>
+      <input type="text" id="certifications" placeholder="Enter certifications">
+    </div>
+    <div class="form-group">
+      <label for="experience">Experience <span style="color: red;">*</span></label>
+      <input type="number" id="experience" placeholder="Enter years of experience" required>
+    </div>
+    <div class="form-group">
+      <label for="id-proof">Government ID Proof <span style="color: red;">*</span></label>
+      <input type="file" id="id-proof" name="id-proof" accept=".png,.jpg,.jpeg,.pdf" required>
+    </div>
+    <div class="form-group">
+      <label for="qualification">Educational Qualification Certificates <span style="color: red;">*</span></label>
+      <input type="file" id="qualification" name="qualification" accept=".png,.jpg,.jpeg,.pdf" required>
+    </div>
+  </div>
+
+  <button type="button" class="submit-btn" onclick="validateAndShowOtp()">Register</button>
+</form>
+
+<script>
+  function toggleFields() {
+    const roleSelect = document.getElementById('role-select');
+    const customerFields = document.getElementById('customer-fields');
+    const serviceProviderFields = document.getElementById('service-provider-fields');
+
+    if (roleSelect.value === 'service-provider') {
+      serviceProviderFields.style.display = 'block'; // Show service provider fields
+      customerFields.style.display = 'none'; // Hide customer fields
+    } else {
+      serviceProviderFields.style.display = 'none'; // Hide service provider fields
+      customerFields.style.display = 'block'; // Show customer fields
+    }
+  }
+
+  function validateAndShowOtp() {
+    const role = document.getElementById('role-select').value;
+    const requiredFields = document.querySelectorAll('#register-form [required]');
+    let valid = true;
+
+    // Validate only visible required fields
+    requiredFields.forEach(field => {
+        if (field.offsetParent !== null && !field.value.trim()) {
+            alert('Please fill all the mandatory fields.');
+            field.focus();
+            valid = false;
+            return; // Exit loop for first invalid field
+        }
+    });
+
+    if (!valid) return; // Stop execution if any field is invalid
+
+    // Email validation (applies to all roles)
+    const emailField = document.getElementById('reg-email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(emailField.value)) {
+        alert('Invalid email address.');
+        emailField.focus();
+        return;
+    }
+
+    // Password validation (only for customers)
+    if (role === 'customer') {
+        const passwordField = document.getElementById('reg-password');
+        const confirmPasswordField = document.getElementById('confirm-password');
+
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+        if (!passwordRegex.test(passwordField.value)) {
+            alert('Password must include at least 8 characters, one uppercase letter, one digit, and one special character.');
+            passwordField.focus();
+            return;
+        }
+
+        if (passwordField.value !== confirmPasswordField.value) {
+            alert('Passwords do not match.');
+            confirmPasswordField.focus();
+            return;
+        }
+    }
+
+    // If everything is valid, show OTP
+    showOtp();
+}
+
+    function showOtp() {
+        alert('OTP has been sent to your registered email.');
+        // Proceed with OTP logic or next steps
+        console.log('OTP Sent logic executed.');
+    }
+</script>
+  
+<script>
+  // Validate file formats
+  function validateFileType(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    input.addEventListener('change', () => {
+      const file = input.files[0];
+      const allowedExtensions = ['png', 'jpg', 'jpeg', 'pdf'];
+      if (file && !allowedExtensions.includes(file.name.split('.').pop().toLowerCase())) {
+        error.style.display = 'block';
+        input.value = '';
+      } else {
+        error.style.display = 'none';
+      }
+    });
+  }
+
+  // Attach validation to file inputs
+  validateFileType('id-proof', 'id-proof-error');
+  validateFileType('qualification', 'qualification-error');
+  validateFileType('certifications-doc', 'certifications-doc-error');
+</script>  
+
+
+ <script>
+  function showOtp() {
+    // Placeholder for OTP functionality
+    alert('OTP functionality triggered!');
+  }
+</script>
+
+
+  <!-- Forgot Password Form -->
+  <form id="forgot-password-form">
+    <p>Enter your registered email to receive password reset instructions.</p>
+    <div class="form-group">
+      <label for="forgot-email">Email</label>
+      <input type="email" id="forgot-email" placeholder="Enter your email" required>
+    </div>
+    <button type="button" class="submit-btn" onclick="sendForgotPasswordOtp()">Submit</button>
+    <div class="back-link">
+      <a href="#" onclick="toggleForm('login')">&larr; Back to Login</a>
+    </div>
+  </form>
+
+  <!-- Reset Password Section -->
+  <div id="reset-password-section" class="otp-section" style="display: none;">
+    <h2>Reset Password</h2>
+    <p>Enter the OTP sent to your email and set a new password.</p>
+    <input type="text" id="reset-otp" placeholder="Enter OTP" required>
+    <input type="password" id="new-password" placeholder="New Password" required>
+    <input type="password" id="confirm-password-reset" placeholder="Confirm Password" required>
+    <button class="submit-btn" onclick="resetPassword()">Reset Password</button>
+  </div>
+
+  <!-- OTP Verification -->
+  <form id="otp-form" class="otp-section">
+    <h2>Multi-Factor Authentication</h2>
+    <p>Enter the OTP sent to your registered email</p>
+    <div class="form-group">
+      <input type="text" id="otp-input" placeholder="Enter OTP" required>
+    </div>
+    <button type="button" class="submit-btn" onclick="verifyOtp()">Verify OTP</button>
+  </form>
+</div>
+
+<script>
+  function toggleForm(formType) {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const resetPasswordSection = document.getElementById('reset-password-section');
+    const otpForm = document.getElementById('otp-form'); // Include the OTP form
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const pageTitle = document.getElementById('page-title');
+    const pageSubtitle = document.getElementById('page-subtitle');
+    const toggleButtons = document.getElementById('toggle-buttons');
+
+    // Hide all forms
+    loginForm.classList.remove('active');
+    registerForm.classList.remove('active');
+    forgotPasswordForm.style.display = 'none';
+    resetPasswordSection.style.display = 'none';
+    otpForm.style.display = 'none'; // Hide OTP form
+    toggleButtons.style.display = 'flex';
+
+    // Reset titles
+    pageTitle.innerText = 'Welcome Back';
+    pageSubtitle.innerText = 'Login to access your PetCare account';
+
+    // Show the selected form
+    if (formType === 'login') {
+      loginForm.classList.add('active');
+      loginBtn.classList.add('active');
+      registerBtn.classList.remove('active');
+    } else if (formType === 'register') {
+      registerForm.classList.add('active');
+      registerBtn.classList.add('active');
+      loginBtn.classList.remove('active');
+    } else if (formType === 'forgot-password') {
+      forgotPasswordForm.style.display = 'block';
+      toggleButtons.style.display = 'none';
+      pageTitle.innerText = 'Forgot Password';
+      pageSubtitle.innerText = '';
+    } else if (formType === 'otp') {
+      otpForm.style.display = 'block'; // Show OTP form
+      pageTitle.innerText = 'Verify OTP';
+      pageSubtitle.innerText = '';
+    }
+  }
+
+ 
+
+
+  function showOtp() {
+    const fullname = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const password = document.getElementById('reg-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const role = document.getElementById('role-select').value;
+    const service_type = document.getElementById('service-type').value;
+    const location = document.getElementById('location').value;
+    const hourly_rate = document.getElementById('hourly-rate').value;
+    const certifications = document.getElementById('certifications').value;
+    const experience = document.getElementById('experience').value;
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    fetch('/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('OTP sent to your email.');
+            sessionStorage.setItem('fullname', fullname);
+            sessionStorage.setItem('password', password);
+            sessionStorage.setItem('role', role);
+            sessionStorage.setItem('service_type',service_type);
+            sessionStorage.setItem('location',location);
+            sessionStorage.setItem('hourly_rate',hourly_rate);
+            sessionStorage.setItem('certifications',certifications);
+            sessionStorage.setItem('experience',experience);
+            toggleForm('otp');
+        } else {
+            alert(data.message);
+        }
+    });
+  }
+
+  function verifyOtp() {
+    const otp = document.querySelector('#otp-input').value;
+    const fullname = sessionStorage.getItem('fullname');
+    const password = sessionStorage.getItem('password');
+    const role = sessionStorage.getItem('role');
+
+    let formData = new FormData();
+    formData.append("otp", otp);
+    formData.append("fullname", fullname);
+    formData.append("password", password);
+    formData.append("role", role);
+
+    if (role === "service-provider") {
+        formData.append("service_type", sessionStorage.getItem("service_type"));
+        formData.append("location", sessionStorage.getItem("location"));
+        formData.append("hourly_rate", sessionStorage.getItem("hourly_rate"));
+        formData.append("certifications", sessionStorage.getItem("certifications"));
+        formData.append("experience", sessionStorage.getItem("experience"));
+        
+        let idProofFile = document.getElementById("id-proof").files[0];
+        let qualificationFile = document.getElementById("qualification").files[0];
+
+        if (idProofFile) formData.append("id-proof", idProofFile);
+        if (qualificationFile) formData.append("qualification", qualificationFile);
+    }
+
+
+    fetch('/verify-otp', {
+        method: 'POST',
+        body: formData
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                if (role === 'customer') {
+                    alert('Registration successful!');
+                    sendRegistrationEmail(fullname, sessionStorage.getItem('email'));
+                } else if (role === 'service-provider') {
+                    alert('Documents uploaded. Wait for admin approval.');
+                    window.location.href = '/home'; // Redirect to customer.html for service providers
+                }
+            } else {
+                alert(data.message);
+            }
+        });
+}
+
+
+function sendRegistrationEmail(fullname, email) {
+    fetch('/send-registration-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullname: fullname, email: email }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                console.log('Registration email sent.');
+            } else {
+                console.error(data.message);
+            }
+        });
+}
+
+
+function login() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+    const role = document.getElementById('role').value;
+
+    if (!email || !password || !role) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    // Handle login for service providers and customers
+    fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: password, role: role })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            if (data.redirect_url) {
+                window.location.replace(data.redirect_url); // Redirect based on role (either service provider or customer)
+            }
+        } else {
+            alert(data.message || 'Login failed');
+        }
+    })
+    .catch(error => {
+        console.error('Login error:', error);
+        alert('An error occurred during login.');
+    });
+}
+
+
+  function sendForgotPasswordOtp() {
+    const email = document.getElementById('forgot-email').value;
+
+    fetch('/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('OTP sent to your email.');
+            document.getElementById('reset-password-section').style.display = 'block';
+        } else {
+            alert(data.message);
+        }
+    });
+  }
+
+  function resetPassword() {
+    const email = document.getElementById('forgot-email').value;
+    const otp = document.getElementById('reset-otp').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password-reset').value;
+
+    if (newPassword !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    fetch('/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, otp: otp, new_password: newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Password reset successful!');
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    });
+  }
+
+  
+  function registerUser() {
+    const role = document.getElementById('role-select').value;
+    const fullname = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const data = { fullname, email, role };
+
+    if (role === 'customer') {
+        data.password = document.getElementById('reg-password').value;
+        data.confirm_password = document.getElementById('confirm-password').value;
+    } else {
+        data.service_type = document.getElementById('service-type').value;
+        data.location = document.getElementById('location').value;
+        data.hourly_rate = document.getElementById('hourly-rate').value;
+        data.certifications = document.getElementById('certifications').value;
+        data.experience = document.getElementById('experience').value;
+    }
+
+    fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        alert(responseData.message);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Ensure toggleFields() runs on page load to apply correct visibility
+window.onload = function () {
+    toggleFields();
+};
+
+document.getElementById('role-select').addEventListener('change', toggleFields);
+
+</script>
+
+</body>
+</html>

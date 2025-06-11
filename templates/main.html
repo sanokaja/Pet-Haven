@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Haven</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 15px 0;
+    }
+
+    .navbar-brand h3 {
+      font-size: 1.8rem;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .navbar-nav {
+      margin-left: auto;
+    }
+
+    .nav-item {
+      font-size: 1.1rem;
+      margin-right: 15px;
+    }
+
+    .nav-link {
+      color: #333 !important;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #f1c40f !important;
+      transform: translateY(-2px);
+    }
+
+    .nav-icons i {
+      font-size: 1.5rem;
+      color: #333;
+      transition: all 0.3s ease;
+      margin-left: 20px;
+    }
+
+    .nav-icons i:hover {
+      color: #f1c40f;
+      transform: translateY(-3px);
+    }
+
+    /* Parallax Effect */
+    .parallax {
+      background-image: url('static/output\ \(4\).jpg');
+      height: 400px;
+      background-position: center;
+      background-attachment: fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    /* Main Container and Sidebar Styles */
+    .main-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 80px;
+      /* Increased to account for fixed navbar */
+      padding: 20px;
+      position: relative;
+      min-height: calc(100vh - 200px);
+      /* Ensure sidebar extends to footer */
+    }
+
+    .left-sidebar {
+      position: sticky;
+      top: 100px;
+      /* Adjust based on navbar height */
+      width: 25%;
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      height: fit-content;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .left-sidebar h4 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .left-sidebar button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: white;
+      color: black;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .left-sidebar button:hover {
+      background-color: black;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* New Dropdown Styles */
+    .left-sidebar .filter-section,
+    .left-sidebar .sort-section {
+      margin-bottom: 20px;
+    }
+
+    .left-sidebar .filter-dropdown,
+    .left-sidebar .sort-dropdown {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: white;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .left-sidebar .filter-dropdown:hover,
+    .left-sidebar .sort-dropdown:hover {
+      background-color: #f8f9fa;
+      border-color: #007bff;
+    }
+
+    .right-section {
+      width: 75%;
+      padding: 30px;
+      background-color: #f8f9fa;
+    }
+
+    /* Carousel Styles */
+    .carousel {
+      max-width: 100%;
+      margin: 30px 0;
+    }
+
+    .carousel-inner {
+      max-height: 500px;
+      overflow: hidden;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-container {
+      margin: 50px 0;
+    }
+
+    /* Carousel styles */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      height: 400px;
+      /* Adjust the height as needed */
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .carousel-slide {
+      display: none;
+      /* Hide all images initially */
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Display the active slide */
+    .carousel .active {
+      display: block;
+    }
+
+    .service-card {
+      background: white;
+      height: 500px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      text-align: center;
+      border-radius: 10px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .service-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .service-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-card h5 {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .service-card p {
+      font-size: 0.8rem;
+    }
+
+    .how-we-provide-cards {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .how-we-provide-card {
+      flex: 1 0 21%;
+      margin: 10px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: white;
+      border-radius: 10px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .how-we-provide-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .faq {
+      background-color: #ffffff;
+      padding: 40px 0;
+      margin-top: 30px;
+    }
+
+    .faq .accordion-button {
+      font-size: 1.1rem;
+    }
+
+    .contact-us form input,
+    .contact-us form textarea {
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    footer {
+      background-color: #808080;
+      /* Grey background color */
+      padding: 20px 0;
+      /* Padding for top and bottom */
+      text-align: center;
+      /* Centered text */
+      color: white;
+      /* White text color */
+    }
+
+    footer a {
+      color: white;
+      /* Links in the footer will be white */
+      text-decoration: none;
+      /* Remove underlining from links */
+      padding: 0 10px;
+      /* Space between links */
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+      /* Underline the links on hover */
+    }
+
+    footer p {
+      font-size: 14px;
+      /* Smaller font size for text */
+      margin: 10px 0;
+      /* Margin around paragraphs */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .left-sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+      }
+
+      .right-section {
+        width: 100%;
+      }
+
+      /* Other mobile-specific styles from the original CSS */
+      .navbar-brand h3 {
+        font-size: 1.6rem;
+      }
+
+      .nav-item {
+        font-size: 1rem;
+      }
+
+      .navbar-nav {
+        text-align: center;
+      }
+
+      .service-card {
+        margin-bottom: 15px;
+      }
+
+      .how-we-provide-card {
+        flex: 1 0 46%;
+        margin: 10px;
+      }
+    }
+
+    .navbar-toggler {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+
+      /* Hamburger Menu Styles */
+      .navbar-toggler {
+        display: block;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+      }
+
+      .navbar-collapse {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        z-index: 1100;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+        padding-top: 60px;
+      }
+
+      .mobile-menu.active {
+        left: 0;
+      }
+
+      .mobile-menu-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 30px;
+        cursor: pointer;
+      }
+
+      .mobile-menu-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .mobile-menu-nav .nav-item {
+        margin: 15px 0;
+      }
+
+      .mobile-menu-sidebar {
+        width: 90%;
+        margin: 20px auto;
+        text-align: center;
+      }
+
+      .mobile-menu-sidebar select {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    }
+
+    /* Landscape Review Cards */
+    #reviews .review-card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    #reviews .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #reviews .card-img-top {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    #reviews .card-body {
+      padding: 10px;
+    }
+
+    #reviews .card-title {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    #reviews .card-text {
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      #reviews .review-card .row {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      #reviews .review-card .col-4 {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+      }
+
+      #reviews .review-card .card-img-top {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    /* General Styles */
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      height: 100%;
+      /* Ensures equal height */
+    }
+
+    /* Image Styling */
+    .container-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    /* Title Styling */
+    .service-card h5 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 10px 0;
+      text-align: center;
+      color: #333;
+    }
+
+    /* Description Styling */
+    .service-card p {
+      font-size: 1rem;
+      line-height: 1.5;
+      text-align: center;
+      color: #666;
+      margin-bottom: 15px;
+      flex-grow: 1;
+      /* Ensures description fills available space */
+    }
+
+    /* Button Styling */
+    .service-card .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .service-card .btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Hover Effects */
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Ensures Equal Height for Bootstrap Rows */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .col-md-4 {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light container-fluid">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <h3>Pet Haven</h3>
+        </a>
+
+        <!-- Desktop Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="main.html">Services </a></li>
+            <li class="nav-item"><a class="nav-link" href="/trainer">Trainers</a></li>
+            <li class="nav-item"><a class="nav-link" href="#appointment">Appointment</a></li>
+          </ul>
+          <div class="nav-icons">
+            <i class="fas fa-user"></i>
+            <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <div class="mobile-menu-close">&times;</div>
+      <div class="mobile-menu-nav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services-provided">Services Provided</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how-we-provide">How We Provide Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#appointment">Appointment</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-sidebar">
+        <div class="filter-section">
+          <h5>Filter</h5>
+          <select class="filter-dropdown">
+            <!-- {% for service in services%} -->
+            <option value="">{{service.title}}</option>
+            <!-- { % endfor %} -->
+          </select>
+        </div>
+        <div>
+          <button onclick="window.location.href='#'">Home</button>
+          <button onclick="window.location.href='#services-provided'">Services Provided</button>
+          <button onclick="window.location.href='#how-we-provide'">How We Provide Services</button>
+          <button onclick="window.location.href='#faq'">Frequently Asked Questions</button>
+          <button onclick="window.location.href='#reviews'">Reviews</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Parallax Section -->
+  <div class="parallax">
+    Your Pet's Favorite Spa Sevices avaiable !
+  </div>
+
+  <!-- Main Content Section -->
+  <div class="main-container container-fluid">
+    <!-- Left Sidebar -->
+    <div class="left-sidebar">
+      <h4>Quick Links</h4>
+      <button onclick="window.location.href='#'">Home</button>
+      <button onclick="window.location.href='#services-provided'">Services Provided</button>
+      <button onclick="window.location.href='#how-we-provide'">How We Provide Services</button>
+      <button onclick="window.location.href='#faq'">Frequently Asked Questions</button>
+      <button onclick="window.location.href='#reviews'">Reviews</button>
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <h5>Filter</h5>
+
+        <select class="sort-dropdown">
+          {% for service in services%}
+
+          <option value="">{{service.title}}</option>
+          {%endfor%}
+        </select>
+
+      </div>
+
+      <!-- Sort Section -->
+      <div class="sort-section">
+        <h5>Sort By</h5>
+        <select class="sort-dropdown">
+          <option value="">Select Sort Option</option>
+          <option value="price">Price</option>
+          <option value="rating">Rating</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+      <!-- Services Provided Section -->
+      <section id="services-provided">
+        <h2 class="section-title">Services</h2>
+        <!-- <div class="row">
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/image.png" alt="Pet Grooming">
+              <h5>Pet Grooming</h5>
+              <p>We provide professional grooming for dogs and cats. </p>
+              <a href="trainer.html#Grooming_Service" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/images.jpg" alt="Health Checkups">
+              <h5>Health Checkups</h5>
+              <p>Ensure your pet's health with regular checkups. </p>
+              <a href="trainer.html#Health_Checkups" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/massage.jpg" alt="Medical Assistance">
+              <h5>Medical Assistance</h5>
+              <p>We offer medical assistance for your pets at home. </p>
+              <a href="trainer.html#Medical_Assistance" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/a-golden-retriever-wrapped-in-a-towel-relaxes-after-a-soothing-bath-at-a-spa-photo.jpg"
+                alt="De-shedding Treatment">
+              <h5>De-shedding Treatment</h5>
+              <p>We provide professional grooming for dogs and cats. </p>
+              <a href="trainer.html#De-shedding_Treatment" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/images (2).jpg" alt="Hypoallergenic Grooming">
+              <h5>Hypoallergenic Grooming</h5>
+              <p>Ensure your pet's health with regular checkups. </p>
+              <a href="trainer.html#Hypoallergenic_Grooming" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/images (3).jpg" alt="Nail Clipping & Grinding">
+              <h5>Nail Clipping & Grinding</h5>
+              <p>We offer medical assistance for your pets at home. </p>
+              <a href="trainer.html#Nail_Clipping&Grinding" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/dog9.jpg" alt="Pet Mud Bath">
+              <h5>Soothing Mud Bath</h5>
+              <p>A relaxing mud bath that helps to detoxify the skin and coat while soothing irritations.</p>
+              <a href="trainer.html#Soothing_Mud_Bath" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/dog8.jpg" alt="Teeth Whitening">
+              <h5>Teeth Whitening</h5>
+              <p>A professional teeth whitening treatment to remove stains and keep your pet's mouth fresh.</p>
+              <a href="trainer.html#Teeth_Whitening" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-card">
+              <img src="static/dog10" alt="Senior Pet Care">
+              <h5>Senior Pet Care</h5>
+              <p>Specialized gentle grooming and spa services tailored for older pets, including joint care and soothing
+                treatments.</p>
+              <a href="trainer.html#Senior_Pet_Care" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+        </div> -->
+        <div class="row">
+          {% for service in services %}
+          <div class="col-md-4">
+            <div class="service-card">
+              <img class="container-img"
+                src="{{ url_for('static', filename='images/services/service' ~ service.id ~'.jpg') }}"
+                alt="{{ service.alt }}">
+              <h5>{{ service.title }}</h5>
+              <p>{{ service.description }}</p>
+              <a href="/trainer" class="btn btn-primary">Meet Trainers</a>
+            </div>
+          </div>
+          {% if loop.index % 3 == 0 and not loop.last %}
+        </div>
+        <div class="row">
+          {% endif %}
+          {%endfor%}
+          {% endfor %}
+        </div>
+
+      </section>
+      <section class="carousel container">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="static/output (3).jpg" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+              <img src="static/output (2).jpg" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+              <img src="static/a-golden-retriever-wrapped-in-a-towel-relaxes-after-a-soothing-bath-at-a-spa-photo.jpg"
+                class="d-block w-100" alt="Slide 3">
+            </div>
+          </div>
+          <!-- Controls (optional) -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </section>
+      <!-- How We Provide Services Section -->
+      <section id="how-we-provide">
+        <h2 class="section-title">How We Provide Services</h2>
+        <div class="how-we-provide-cards">
+          <div class="how-we-provide-card">
+            <i class="fas fa-calendar-check fa-3x"></i>
+            <h5>You Are in Charge</h5>
+            <p>Schedule and book grooming slots online—7 days a week!</p>
+          </div>
+          <div class="how-we-provide-card">
+            <i class="fas fa-truck fa-3x"></i>
+            <h5>Professionals Pet Stylists</h5>
+            <p>Our pet groomer brings all the equipment directly to your home!</p>
+          </div>
+          <div class="how-we-provide-card">
+            <i class="fas fa-bus fa-3x"></i>
+            <h5>No Stress Travel</h5>
+            <p>Your pet enjoys grooming at home, no travel required.</p>
+          </div>
+          <div class="how-we-provide-card">
+            <i class="fas fa-trash fa-3x"></i>
+            <h5>Groomer Cleans Up</h5>
+            <p>We clean up everything after grooming is done.</p>
+          </div>
+        </div>
+        <div class="how-we-provide-cards">
+          <div class="how-we-provide-card">
+            <i class="fas fa-calendar-check fa-3x"></i>
+            <h5>You Are in Charge</h5>
+            <p>Schedule and book grooming slots online—7 days a week!</p>
+          </div>
+          <div class="how-we-provide-card">
+            <i class="fas fa-truck fa-3x"></i>
+            <h5>Professionals Pet Stylists</h5>
+            <p>Our pet groomer brings all the equipment directly to your home!</p>
+          </div>
+          <div class="how-we-provide-card">
+            <i class="fas fa-bus fa-3x"></i>
+            <h5>No Stress Travel</h5>
+            <p>Your pet enjoys grooming at home, no travel required.</p>
+          </div>
+          <div class="how-we-provide-card">
+            <i class="fas fa-trash fa-3x"></i>
+            <h5>Groomer Cleans Up</h5>
+            <p>We clean up everything after grooming is done.</p>
+          </div>
+        </div>
+      </section>
+      <section class="carousel container">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="static/slide1.jpg" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+              <img src="static/slide3.jpg" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+              <img src="static/slide2.jpg" class="d-block w-100" alt="Slide 3">
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+              data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+              data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+      </section>
+      <!-- FAQ Section -->
+      <section id="faq" class="faq">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="accordion" id="faqAccordion">
+          <!-- Question 1 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
+                What services do you offer?
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                We offer a variety of spa services including grooming, health checkups, relaxation treatments, and more
+                to
+                keep your pet healthy and happy.
+              </div>
+            </div>
+          </div>
+          <!-- Question 2 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                aria-expanded="false" aria-controls="collapseTwo">
+                How do I book an appointment?
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                You can easily schedule your grooming appointment by selecting your preferred date and time on our
+                website. Just fill out the booking form and confirm your appointment.
+              </div>
+            </div>
+          </div>
+          <!-- Question 3 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                aria-expanded="false" aria-controls="collapseThree">
+                What are your operating hours?
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Our operating hours are from 9 AM to 6 PM, Monday to Saturday. We are closed on Sundays.
+              </div>
+            </div>
+          </div>
+          <!-- Question 4 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                aria-expanded="false" aria-controls="collapseFour">
+                Do you offer pet pick-up and delivery?
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Yes, we offer pick-up and delivery services for your pets within a 10-mile radius. Please contact us for
+                more
+                details.
+              </div>
+            </div>
+          </div>
+          <!-- Question 5 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive"
+                aria-expanded="false" aria-controls="collapseFive">
+                Are your groomers trained professionals?
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Yes, all of our groomers are highly trained and experienced professionals who love working with pets.
+              </div>
+            </div>
+          </div>
+          <!-- Question 6 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix"
+                aria-expanded="false" aria-controls="collapseSix">
+                Can I accompany my pet during the grooming session?
+              </button>
+            </h2>
+            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Due to safety and comfort reasons, we ask that you leave your pet with our professional groomers.
+                However, you
+                are welcome to stay in our waiting area.
+              </div>
+            </div>
+          </div>
+          <!-- Question 7 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSeven">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven"
+                aria-expanded="false" aria-controls="collapseSeven">
+                Do you offer emergency services?
+              </button>
+            </h2>
+            <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                We do not offer emergency services, but we can recommend local clinics for urgent care needs.
+              </div>
+            </div>
+          </div>
+          <!-- Question 8 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingEight">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight"
+                aria-expanded="false" aria-controls="collapseEight">
+                Can I make changes to my booking after it's confirmed?
+              </button>
+            </h2>
+            <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight"
+              data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Yes, you can modify your booking by logging into your account and selecting "Edit Appointment" before
+                the
+                scheduled time.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="carousel container">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="static/output (3).jpg" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+              <img src="static/output (2).jpg" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+              <img src="static/a-golden-retriever-wrapped-in-a-towel-relaxes-after-a-soothing-bath-at-a-spa-photo.jpg"
+                class="d-block w-100" alt="Slide 3">
+            </div>
+          </div>
+        </div>
+        <!-- Controls (optional) -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </section>
+      <!-- Customer Reviews Section -->
+      <section id="reviews" class="container my-5">
+        <h2 class="text-center mb-4">What Our Happy Pet Parents Say</h2>
+        <div class="row">
+          <!-- Review 1 -->
+          <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card review-card">
+              <div class="row g-0 align-items-center">
+                <div class="col-4">
+                  <img src="static/trainer17.avif" class="card-img-top img-fluid rounded-circle p-2"
+                    alt="Customer Image">
+                </div>
+                <div class="col-8">
+                  <div class="card-body p-2">
+                    <h6 class="card-title mb-1">Jane Doe</h6>
+                    <div class="d-flex align-items-center mb-1">
+                      <span class="text-warning me-2">★</span>
+                      <small class="text-muted">4.5/5</small>
+                    </div>
+                    <p class="card-text small">"Amazing grooming service! My dog looks great."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card review-card">
+              <div class="row g-0 align-items-center">
+                <div class="col-4">
+                  <img src="static/traner14.jpg" class="card-img-top img-fluid rounded-circle p-2" alt="Customer Image">
+                </div>
+                <div class="col-8">
+                  <div class="card-body p-2">
+                    <h6 class="card-title mb-1">John Smith</h6>
+                    <div class="d-flex align-items-center mb-1">
+                      <span class="text-warning me-2">★</span>
+                      <small class="text-muted">3.5/5</small>
+                    </div>
+                    <p class="card-text small">"Friendly staff and great massage therapy.Great Help"</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card review-card">
+              <div class="row g-0 align-items-center">
+                <div class="col-4">
+                  <img src="trainer5.jpg" class="card-img-top img-fluid rounded-circle p-2" alt="Customer Image">
+                </div>
+                <div class="col-8">
+                  <div class="card-body p-2">
+                    <h6 class="card-title mb-1">Emily Harris</h6>
+                    <div class="d-flex align-items-center mb-1">
+                      <span class="text-warning me-2">★</span>
+                      <small class="text-muted">5/5</small>
+                    </div>
+                    <p class="card-text small">"Professional health checkup. Highly recommended!"</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Us Section -->
+      <section id="contact-us" class="container my-5">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="row">
+          <div class="col-md-6">
+            <form>
+              <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <h4>Our Location</h4>
+            <img src="static/dog4.jpg" alt="Services image" id="service_img">
+            <p>123 Pet Haven Street, Pet City, PC 12345</p>
+            <p>Phone: (123) 456-7890</p>
+            <p>Email: support@pethaven.com</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+  </div>
+  </div>
+  <!-- Footer -->
+  <footer class="container-fluid ">
+    <div class="container-fluid">
+      <div class="row justify-content-between">
+        <div class="col-md-3 footer-column">
+          <h5>Quick Links</h5>
+          <a href="#">Home</a>
+          <a href="#">Reviews</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="col-md-3 footer-column">
+          <h5>Contact Us</h5>
+          <p> Pet Haven </p>
+          <p>Infosys, 12345</p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Email: support@pethaven.com</p>
+        </div>
+        <div class="col-md-3 footer-column p-2">
+          <h5>Follow Us</h5>
+          <div class="social-icons">
+            <i class="fab fa-facebook-f p-2"></i>
+            <i class="fab fa-instagram p-2"></i>
+            <i class="fab fa-linkedin p-2"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS & Custom Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Hamburger Menu Functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const hamburgerBtn = document.querySelector('.navbar-toggler');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const mobileMenuClose = document.querySelector('.mobile-menu-close');
+    });
+    hamburgerBtn.addEventListener('click', function () {
+      mobileMenu.classList.add('active');
+    });
+
+    mobileMenuClose.addEventListener('click', function () {
+      mobileMenu.classList.remove('active');
+    });
+
+    // Close mobile menu when a link is clicked
+    const mobileNavLinks = document.querySelectorAll('.mobile-menu-nav .nav-link');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        mobileMenu.classList.remove('active');
+      });
+    });
+    // Scroll to top functionality
+    const scrollTopButton = document.getElementById("scrollToTop");
+    window.onscroll = function () {
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollTopButton.style.display = "block";
+      } else {
+        scrollTopButton.style.display = "none";
+      }
+    };
+
+    scrollTopButton.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // New functionality for multiple carousels and dropdowns
+    document.addEventListener('DOMContentLoaded', function () {
+      // Fix multiple carousel IDs
+      const carousels = document.querySelectorAll('.carousel.slide');
+      carousels.forEach((carousel, index) => {
+        carousel.id = `carouselExampleAutoplaying${index + 1}`;
+        const controls = carousel.querySelectorAll('[data-bs-target]');
+        controls.forEach(control => {
+          control.setAttribute('data-bs-target', `#${carousel.id}`);
+        });
+      });
+
+      // Dropdown functionality
+      const filterDropdown = document.querySelector('.filter-dropdown');
+      const sortDropdown = document.querySelector('.sort-dropdown');
+
+      filterDropdown.addEventListener('change', function () {
+        const selectedCategory = this.value;
+        // Add filtering logic here
+        console.log('Selected Category:', selectedCategory);
+      });
+
+      sortDropdown.addEventListener('change', function () {
+        const selectedSort = this.value;
+        // Add sorting logic here
+        console.log('Selected Sort:', selectedSort);
+      });
+    });
+  </script>
+</body>
+
+</html>

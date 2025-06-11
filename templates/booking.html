@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffec9f;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .trainer-details {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .trainer-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .trainer-info h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+
+        .reviews,
+        .appointment,
+        .booking-summary {
+            margin-top: 20px;
+        }
+
+        .appointment label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .appointment input[type="date"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .appointment ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .appointment li {
+            margin-bottom: 10px;
+        }
+
+        .slot-available button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f4da6f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .slot-available button:hover {
+            background-color: #ffa41c;
+            transform: scale(1.05);
+        }
+
+        .slot-booked button {
+            background-color: #302c2c6e;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .booking-summary {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .loading {
+            display: none;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .trainer-photo img,
+        .shop-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-gallery {
+            display: flex;
+            gap: 10px;
+            margin-left: 20px;
+            flex-wrap: wrap;
+        }
+
+        .photo-gallery img {
+            width: calc(33.33% - 10px);
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-left: 6px;
+        }
+
+        .location iframe {
+            width: 100%;
+            height: 300px;
+            border: 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-primary {
+            background-color: #ffa41c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="background-color:#faf0c4;">
+        <!-- Trainer Details Section -->
+        <h2 style="color: #181938;">Appointment Booking </h2>
+        <div class="trainer-details section" style="background-color:#faf0c4;">
+            {% if service %}
+            {% if provider %}
+            <div class="trainer-photo">
+                <img src="{{ url_for('static', filename='images/trainers/trainer' ~ provider.service_provider_id ~'.jpg') }}"
+                    alt="Trainer Photo">
+            </div>
+            <div>
+                <h1><strong>Trainer Name:</strong> {{ provider.name }}</h1>
+                <p><strong>Experience:</strong> {{ provider.experience }} years</p>
+                <p><strong>Specialized in:</strong> {{ service.title }}</p>
+                <p><strong>Price</strong> $50/hour</p>
+                <!--<p>Rating: ⭐⭐⭐⭐☆ (4.5/5)</p>-->
+                <p><strong>Description:</strong> {{ provider.description }}</p>
+                <p><strong>Availability:</strong> {{ "Available" if provider.availability else "Not Available" }}</p>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+
+        
+        <div class="location section">
+            <h2>Shop Location</h2>
+            <p>{{ provider.location }}</p>
+            <iframe
+        src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q={{ provider.location | urlencode }}"
+        allowfullscreen="" loading="lazy">
+    </iframe>
+        </div>
+
+        <!-- Photo Gallery Section -->
+        <div class="photo-gallery section">
+            <h2>Shop Photos</h2>
+            <div>
+                <img src="{{ url_for('static', filename='images/trainers/shop1.jpeg') }} " alt="Shop Photo 1">
+                <img src="{{ url_for('static', filename='images/trainers/shop2.jpeg') }}" alt="Shop Photo 2">
+                <img src="{{ url_for('static', filename='images/trainers/shop3.jpeg') }}" alt="Shop Photo 3">
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews section">
+            <h2>Reviews:</h2>
+            <ul>
+                <li><strong>Customer1:</strong> Amazing trainer, highly recommend!</li>
+                <li><strong>Customer2:</strong> Great experience, very professional.</li>
+            </ul>
+        </div>
+
+        <!-- Appointment Section -->
+
+        <div class="appointment section">
+            <h2 style="color: #181938;">Book Your Appointment</h2>
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date">
+            <ul id="slot-list"></ul>
+            <div class="loading" id="loading">Loading slots...</div>
+            <div id="booking-summary" class="booking-summary">
+                <p style="text-align: center;"><strong>Selected Date:</strong> <span id="summary-date"></span></p>
+                <p style="text-align: center;"><strong>Selected Time:</strong> <span id="summary-time"></span></p>
+                <button class="button-primary" style="background-color: black; display: block; margin: 0 auto;" onclick="confirmBooking()">Confirm Booking</button>
+            </div>
+            <!-- {%if provider.service_provider_id in cart_items_ids%} -->
+    <!-- <a href="/add_to_cart/{{provider.service_provider_id}}">
+        <button class="button-primary" style="background-color: grey;">Added to the Cart</button>
+    </a> -->
+<!-- {%else%} -->
+       <button onclick="addToCart()" class="button-primary" style="display: block; margin: 0 auto;">
+        Add to cart
+    </button>
+<!-- {%endif%} -->
+        </div>
+        <script>
+            const dateInput = document.getElementById('date');
+            const slotList = document.getElementById('slot-list');
+            const summaryDate = document.getElementById('summary-date');
+            const summaryTime = document.getElementById('summary-time');
+            const bookingSummary = document.getElementById('booking-summary');
+            const loading = document.getElementById('loading');
+            const provider_id = "{{ provider.service_provider_id }}";
+
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+            dateInput.value = today;
+
+            dateInput.addEventListener('change', fetchSlots);
+
+            function fetchSlots() {
+                loading.style.display = 'block';
+                slotList.innerHTML = '';
+
+                const selectedDate = dateInput.value;
+                fetch(`/api/slots?date=${selectedDate}&provider_id=${provider_id}`)
+                    .then(response => response.json())
+                    .then(slots => {
+                        loading.style.display = 'none';
+
+                        if (slots.length === 0) {
+                            slotList.innerHTML = '<p>No slots available for the selected date.</p>';
+                        } else {
+                            slots.forEach(slot => {
+                                const li = document.createElement('li');
+                                li.className = slot.isBooked ? 'slot-booked' : 'slot-available';
+
+                                const button = document.createElement('button');
+                                button.textContent = slot.time;
+                                button.disabled = slot.isBooked;
+
+                                if (!slot.isBooked) {
+                                    button.onclick = () => selectSlot(slot.time);
+                                }
+
+                                li.appendChild(button);
+                                slotList.appendChild(li);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        loading.style.display = 'none';
+                        slotList.innerHTML = '<p>Error loading slots.</p>';
+                        console.error('Error fetching slots:', error);
+                    });
+            }
+
+            function selectSlot(time) {
+                summaryDate.textContent = dateInput.value;
+                summaryTime.textContent = time;
+                bookingSummary.style.display = 'block';
+            }
+
+            function confirmBooking() {
+                const selectedDate = summaryDate.textContent;
+                const selectedTime = summaryTime.textContent;
+
+                fetch('/api/book_slot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        provider_id: provider_id,
+                        date: selectedDate,
+                        time: selectedTime
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(`Booking confirmed for ${selectedDate} at ${selectedTime}!`);
+                            const buttons = document.querySelectorAll('.slot-available button');
+                            buttons.forEach(button => {
+                                if (button.textContent === selectedTime) {
+                                    button.disabled = true;
+                                    button.style.backgroundColor = '#dc3545';
+                                    button.style.cursor = 'not-allowed';
+                                    button.textContent += ' (Booked)';
+                                }
+                            });
+                            bookingSummary.style.display = 'none';
+                        } else {
+                            alert(data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error confirming booking:', error);
+                        alert('Error confirming booking. Please try again.');
+                    });
+            }
+
+            function initiateCheckout() {
+                fetch('/initiate_cart_checkout')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            alert(data.message);
+                        }
+                        if (data.redirect_url) {
+                            window.location.href = data.redirect_url;
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error proceeding to checkout. Please try again.');
+                    });
+            }
+           // Add this script to your existing JavaScript section
+           function addToCart() {
+                const booking_date = summaryDate.textContent;
+                const booking_time = summaryTime.textContent;
+                const service_provider_id = provider_id
+                console.log('Adding to cart:', service_provider_id, booking_date, booking_time);
+                try {
+                    const response = fetch('/add_to_cart_trainers', {
+                        method: 'POST', // HTTP method
+                        headers: {
+                            'Content-Type': 'application/json', // Set content type to JSON
+                        },
+                        body: JSON.stringify({
+                            service_provider_id: service_provider_id,
+                            booking_date: booking_date,
+                            booking_time: booking_time,
+                        }), // Convert the data to JSON format
+                    }).then((response) => {
+                        if (response.redirected){
+                            window.location.href = response.url;
+                        }
+                    });
+
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    // Parse JSON response
+                    const result = response.json();
+                    console.log('Success:', result); // Handle the response here
+                } catch (error) {
+                    console.error('Error in addToCart:', error);
+                }
+            }
+            
+            window.onload = fetchSlots;  // Fetch slots when the page loads
+        </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+
+</html>

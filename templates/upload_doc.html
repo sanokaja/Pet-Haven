@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Document Upload</title>
+    <link rel='stylesheet' href='static/css/upload.css'>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Documents</h1>
+        <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="id-proof">Government ID Proof <span style="color: red;">*</span></label>
+            <small style="font-size: smaller; color: gray;">(Only png, jpg, pdf format allowed)</small>
+            <input type="file" id="id-proof" name="id-proof" accept=".png,.jpg,.jpeg,.pdf" required>
+            <span class="error" id="id-proof-error" style="color:red; font-size: smaller; display:none; margin-top: 0px;">Invalid file format. Please upload a png, jpg, or pdf file.</span><br>
+        
+            <label for="qualification">Education Qualification Certificates <span style="color: red;">*</span></label>
+            <small style="font-size: smaller; color: gray;">(Only png, jpg, pdf format allowed)</small>
+            <input type="file" id="qualification" name="qualification" accept=".png,.jpg,.jpeg,.pdf" required>
+            <span class="error" id="qualification-error" style="color:red; font-size: smaller; display:none; margin-top: 2px;">Invalid file format. Please upload a png, jpg, or pdf file.</span><br>
+        
+            <label for="Certifications">Certifications</label>
+            <small style="font-size: smaller; color: gray;">(Only png, jpg, pdf format allowed)</small>
+            <input type="file" id="Certifications" name="Certifications" accept=".png,.jpg,.jpeg,.pdf">
+            <span class="error" id="Certifications-error" style="color:red; font-size: smaller; display:none; margin-top: 2px;">Invalid file format. Please upload a png, jpg, or pdf file.</span><br>
+        
+            <button type="submit">Submit for Verification</button>
+        </form>
+        
+        
+        <script>
+            // Function to validate file type
+            function validateFileType(inputId, errorId) {
+                const input = document.getElementById(inputId);
+                const error = document.getElementById(errorId);
+                const allowedExtensions = ['png', 'jpg', 'jpeg', 'pdf'];
+        
+                input.addEventListener('change', () => {
+                    const file = input.files[0];
+                    if (file) {
+                        const fileExtension = file.name.split('.').pop().toLowerCase();
+                        if (!allowedExtensions.includes(fileExtension)) {
+                            error.style.display = 'inline-block'; // Show error
+                            input.value = ''; // Clear the invalid file
+                        } else {
+                            error.style.display = 'none'; // Hide error
+                        }
+                    } else {
+                        error.style.display = 'none'; // Hide error if no file is selected
+                    }
+                });
+            }
+        
+            // Attach validation to each file input
+            validateFileType('id-proof', 'id-proof-error');
+            validateFileType('qualification', 'qualification-error');
+            validateFileType('Certifications', 'Certifications-error');
+        
+            // Form submission handler
+            document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+                e.preventDefault(); // Prevent default form submission
+                const errors = document.querySelectorAll('.error');
+                for (const error of errors) {
+                    if (error.style.display === 'inline-block') {
+                        alert('Please resolve all errors before submitting.');
+                        return;
+                    }
+                }
+        
+                const formData = new FormData(document.getElementById('uploadForm'));
+        
+                try {
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData,
+                    });
+        
+                    if (response.ok) {
+                        alert('Documents uploaded successfully!');
+                        document.getElementById('uploadForm').reset(); // Clear the form
+                    } else {
+                        alert('Error submitting documents.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An unexpected error occurred.');
+                }
+            });
+        </script>
+        
+        
+
+
+
+    <script>
+        // JavaScript to display error messages if the fields are left empty
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            let valid = true;
+
+            // Check ID proof
+            const id_proof_path = document.getElementById('id-proof');
+            const idProofError = document.getElementById('id-proof-error');
+            if (!id_proof_path.files.length) {
+                valid = false;
+                idProofError.style.display = 'inline'; // Show error message
+            } else {
+                idProofError.style.display = 'none'; // Hide error message if file is selected
+            }
+
+            // Check qualification certificates
+            const qualification_path = document.getElementById('qualification');
+            const qualificationError = document.getElementById('qualification-error');
+            if (!qualification_path.files.length) {
+                valid = false;
+                qualificationError.style.display = 'inline'; // Show error message
+            } else {
+                qualificationError.style.display = 'none'; // Hide error message if file is selected
+            }
+
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+
+
+
+            
+            // Check certifications
+            const certifications_path = document.getElementById('certifications');
+            const certificationsError = document.getElementById('certifications-error');
+            if (!certifications_path.files.length) {
+                valid = false;
+                certificationsError.style.display = 'inline'; // Show error message
+            } else {
+                certificationsError.style.display = 'none'; // Hide error message if file is selected
+            }
+
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    </script>
+</div>
+</body>
+
+
+</html>

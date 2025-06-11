@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spa Services</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Navbar background color */
+    .navbar {
+      background-color: #ffec9f;
+    }
+
+    /* Brand name styling */
+    .navbar-brand {
+      color: white !important;
+      font-weight: bold;
+    }
+
+    /* Navbar links and icons */
+    .navbar-nav .nav-link,
+    .nav-icons i {
+      color: white !important;
+    }
+
+    .view_services {
+      background-color: transparent;
+      border: 2px solid #fdfdfd;
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .view_services:hover {
+      background-color: #ffec9f;
+      color: white;
+      border: 2px solid #ffec9f;
+    }
+
+    /* Transparent Home button with white border */
+    .navbar-nav .nav-item:first-child .nav-link {
+      background-color: transparent;
+      border: 2px solid white;
+      border-radius: 5px;
+      padding: 5px 10px;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #faf0c4;
+    }
+
+    /* Hover effect for the Home button */
+    .navbar-nav .nav-item:first-child .nav-link:hover {
+      background-color: white;
+      color: #ffec9f !important;
+    }
+
+    /* General hover effect for other links */
+    .navbar-nav .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Nav icons hover effect */
+    .nav-icons i:hover {
+      opacity: 0.8;
+    }
+
+    /* White hamburger icon */
+    .navbar-toggler {
+      border-color: rgba(255, 255, 255, 0.5);
+      /* White border */
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    /* Landscape Review Cards */
+    #reviews .review-card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    #reviews .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #reviews .card-img-top {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    #reviews .card-body {
+      padding: 10px;
+    }
+
+    #reviews .card-title {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    #reviews .card-text {
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      #reviews .review-card .row {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      #reviews .review-card .col-4 {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+      }
+
+      #reviews .review-card .card-img-top {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    .profile-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-body {
+        width: 100%;
+        height: auto;
+      }
+
+      .profile-image {
+        height: auto;
+      }
+    }
+
+    .service_img {
+      max-width: 50%;
+      max-height: 50%;
+    }
+
+    .left-sidebar {
+      position: sticky;
+      top: 100px;
+      /* Adjust based on navbar height */
+      width: 25%;
+      background-color: #faf0c4;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      height: fit-content;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .left-sidebar h4 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .left-sidebar button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #f8d754;
+      color: white;
+      border: 2px solid #ffec9f;
+      border-radius: 20px;
+      font-size: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .left-sidebar button:hover {
+      background-color: black;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .right-section {
+      width: 75%;
+      padding: 30px;
+      background-color: #faf0c4;
+    }
+
+    /* Carousel Styles */
+    .carousel {
+      max-width: 100%;
+      margin: 30px 0;
+    }
+
+    .carousel-inner {
+      max-height: 500px;
+      overflow: hidden;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-container {
+      margin: 50px 0;
+    }
+
+    /* Carousel styles */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      height: 400px;
+      /* Adjust the height as needed */
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .carousel-slide {
+      display: none;
+      /* Hide all images initially */
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Display the active slide */
+    .carousel .active {
+      display: block;
+    }
+
+    .service-card {
+      background: white;
+      height: 450px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      text-align: center;
+      border-radius: 10px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .service-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .service-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-card h5 {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .service-card p {
+      font-size: 0.8rem;
+    }
+
+    .how-we-provide-cards {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .how-we-provide-card {
+      flex: 1 0 21%;
+      margin: 10px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: white;
+      border-radius: 10px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .how-we-provide-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .faq {
+      background-color: #ffffff;
+      padding: 40px 0;
+      margin-top: 30px;
+    }
+
+    .faq .accordion-button {
+      font-size: 1.1rem;
+      background-color: #faf0c4;
+    }
+
+    .contact-us form input,
+    .contact-us form textarea {
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    footer {
+      background-color: #808080;
+      /* Grey background color */
+      padding: 20px 0;
+      /* Padding for top and bottom */
+      text-align: center;
+      /* Centered text */
+      color: white;
+      /* White text color */
+    }
+
+    footer a {
+      color: white;
+      /* Links in the footer will be white */
+      text-decoration: none;
+      /* Remove underlining from links */
+      padding: 0 10px;
+      /* Space between links */
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+      /* Underline the links on hover */
+    }
+
+    footer p {
+      font-size: 14px;
+      /* Smaller font size for text */
+      margin: 10px 0;
+      /* Margin around paragraphs */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .left-sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+      }
+
+      .right-section {
+        width: 100%;
+      }
+
+      .service-card {
+        margin-bottom: 15px;
+      }
+
+      .how-we-provide-card {
+        flex: 1 0 46%;
+        margin: 10px;
+      }
+
+      .service-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        height: 100%;
+        /* Ensures equal height */
+      }
+
+      .container-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+
+      /* Title Styling */
+      .service-card h5 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 10px 0;
+        text-align: center;
+        color: #333;
+      }
+
+      /* Description Styling */
+      .service-card p {
+        font-size: 1rem;
+        line-height: 1.5;
+        text-align: center;
+        color: #666;
+        margin-bottom: 15px;
+        flex-grow: 1;
+        /* Ensures description fills available space */
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      /* Button Styling */
+      .service-card .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s;
+      }
+
+      .service-card .btn:hover {
+        background-color: #0056b3;
+      }
+
+      /* Hover Effects */
+      .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Ensures Equal Height for Bootstrap Rows */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .col-md-4 {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    /* General Styling */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    /* Service Card */
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .service-card.row {
+      margin-bottom: 20px;
+      /* Adjust spacing as needed */
+    }
+
+    /* Service Image */
+    .service-card .container-img {
+      max-height: 150px;
+      object-fit: cover;
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    /* Button Container to Push the Button to the Bottom */
+    .service-card .button-container {
+      margin-top: auto;
+      /* Pushes the button to the bottom */
+    }
+
+    /* Meet Trainers Button Styling */
+    .meet-trainers-btn {
+      background-color: #ffec9f;
+      border-color: #ffec9f;
+      color: #000;
+      width: 100%;
+      /* Full-width button */
+      text-align: center;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Hover Effect for Button */
+    .meet-trainers-btn:hover {
+      background-color: #f3d97b;
+      border-color: #f3d97b;
+      color: #fff;
+    }
+
+    .rightsec {
+      padding: 5px;
+    }
+
+    .parallax {
+      background-image: url("{{ url_for('static', filename='images/trainers/paralleximage1.jpg') }}");
+      height: 400px;
+      background-position: center;
+      background-attachment: fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <h3>Pet Haven</h3>
+      </a>
+      <!-- Hamburger Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{url_for('admin_landing')}}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('admin_services')}}">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services-provided">Trainers</a>
+          </li>
+
+        </ul>
+        <div class="nav-icons">
+          <i class="fas fa-user p-2"></i>
+
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section class="main-container  container-fluid p-5 " style="background-color: #faf0c4;">
+    <div class="container">
+      <div class="parallax ">
+        <h1 class="display-4 pt-8" style="color: #181938;"><b>Welcome to Pet Haven</b></h1>
+        <p class="lead" style="color: #eeeef3;">
+          We provide the best services for your pets. Choose from a variety
+          of services and trainers to keep your pets healthy and happy.
+        </p>
+        <div class="text-center">
+          <a href="#services-provided" class="btn btn-primary btn-lg view_services">View Trainer</a>
+        </div>
+      </div>
+      
+<div class="container mt-4">
+  <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #ffec9f;">
+                  <h3 class="mb-0">Edit Requests</h3>
+                  {% if pending_count > 0 %}
+                  <span class="badge bg-warning">{{ pending_count }} Pending</span>
+                  {% endif %}
+              </div>
+              <div class="card-body">
+                  {% if edit_requests %}
+                  <div class="table-responsive">
+                      <table class="table table-hover">
+                          <thead>
+                              <tr>
+                                  <th>Date</th>
+                                  <th>Name</th>
+                                  <th>Service Type</th>
+                                  <th>Location</th>
+                                  <th>Rate</th>
+                                  <th>Status</th>
+                                  <th>Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {% for request in edit_requests %}
+                              <tr class="{{ 'table-warning' if request.status == 'pending' else 'table-success' if request.status == 'approved' else 'table-danger' }}">
+                                  <td>{{ request.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                  <td>{{ request.full_name }}</td>
+                                  <td>{{ request.service_type }}</td>
+                                  <td>{{ request.location }}</td>
+                                  <td>₹{{ request.hourly_rate }}</td>
+                                  <td>
+                                      <span class="badge bg-{{ 'warning' if request.status == 'pending' else 'success' if request.status == 'approved' else 'danger' }}">
+                                          {{ request.status }}
+                                      </span>
+                                  </td>
+                                  <td>
+                                      <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#requestModal{{ request.id }}">
+                                          View
+                                      </button>
+                                      <form action="{{ url_for('delete_request', request_id=request.id) }}" method="POST" class="d-inline">
+                                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this request?')">Delete</button>
+                                      </form>
+                                  </td>
+                              </tr>
+                              
+                              <!-- Modal for each request -->
+                              <div class="modal fade" id="requestModal{{ request.id }}" tabindex="-1">
+                                  <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h5 class="modal-title">Edit Request Details</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                              <div class="row">
+                                                  <div class="col-md-6">
+                                                      <p><strong>Name:</strong> {{ request.full_name }}</p>
+                                                      <p><strong>Email:</strong> {{ request.email }}</p>
+                                                      <p><strong>Service Type:</strong> {{ request.service_type }}</p>
+                                                      <p><strong>Location:</strong> {{ request.location }}</p>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <p><strong>Hourly Rate:</strong> ₹{{ request.hourly_rate }}</p>
+                                                      <p><strong>Experience:</strong> {{ request.experience }}</p>
+                                                      <p><strong>Certifications:</strong></p>
+                                                      <ul>
+                                                          {% for cert in request.certifications.split(',') %}
+                                                          <li><a href="{{ cert }}" target="_blank">View Certificate</a></li>
+                                                          {% endfor %}
+                                                      </ul>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                              {% if request.status == 'pending' %}
+                                              <form action="{{ url_for('update_request_status', request_id=request.id) }}" method="POST" class="d-inline">
+                                                  <input type="hidden" name="status" value="approved">
+                                                  <button type="submit" class="btn btn-success">Approve</button>
+                                              </form>
+                                              <form action="{{ url_for('update_request_status', request_id=request.id) }}" method="POST" class="d-inline">
+                                                  <input type="hidden" name="status" value="rejected">
+                                                  <button type="submit" class="btn btn-danger">Reject</button>
+                                              </form>
+                                              {% else %}
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                              {% endif %}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                  </div>
+                  {% else %}
+                  <p class="text-center">No edit requests found.</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+      <div class="main-content-section container-fluid p-10" style="background-color: #faf0c4;">
+        <div class="row" style="background-color: #faf0c4;">
+          <div class="col-md-4 left-sidebar">
+            <h4 class="text-center" style="color: #181938;">Quick Links</h4>
+            <button onclick="window.location.href='#'">Home</button>
+            <button onclick="window.location.href='#services-provided'">Services Provided</button>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#addTrainerModal">Add Trainer</button>
+            <button onclick="window.location.href='#faq'">Frequently Asked Questions</button>
+            <button onclick="window.location.href='#reviews'">Reviews</button>
+            <button onclick="window.location.href='#contact-us'">Contact Us</button>
+
+          </div>
+          <div class="col-md-8 right-section container-fluid" style="background-color: #faf0c4;">
+            <section id="services-provided" class="container-fluid" style="background-color: #faf0c4;">
+              <h2 class="section-title">Service Provider</h2>
+              <div class="row rightsec">
+                {% for trainer in trainers %}
+                <div class="col-md-4">
+                  <div class="service-card ">
+                    <!-- Service Image -->
+                    <img class="container-img"
+                      src="{{ url_for('static', filename='images/trainers/trainer' ~ trainer.service_provider_id ~'.jpg') }}"
+                      alt="{{ alt_text }}">
+                    <!-- Service Title and Description -->
+                    <h5>Name :{{ trainer.name }}</h5>
+                    <p>Availability: {{ trainer.availability }}</p>
+                    <p class="experience">Experience: {{ trainer.experience }} Years</p>
+                    <p>Cost :{{ trainer.cost }}</p>
+                    <!-- Button Always at the Bottom -->
+                    <div class="button-container">
+                      <!-- Update your service cards to include edit buttons -->
+                      <div class="button-container d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary m-1" data-bs-toggle="modal"
+                          data-bs-target="#editServiceModal"
+                          onclick="populateEditModal('{{ trainer.service_provider_id }}', '{{ trainer.name }}', '{{ trainer.experience }}', '{{ trainer.service_provided_id}}', '{{ trainer.description }}', '{{ trainer.location }}' , '{{ trainer.cost }}')"
+                          style="background-color: #f8d754; border:#f8d754">
+                          Edit
+                        </button>
+                        <button type="button" class="btn btn-danger delete-service m-1" data-service-id="{{ trainer.service_provider_id }}">
+                          Delete
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                {% if loop.index % 3 == 0 and not loop.last %}
+              </div>
+              <div class="row rightsec">
+                {% endif %}
+                {% endfor %}
+              </div>
+            </section>
+            <section class="carousel container p-5" style="background-color: #faf0c4;">
+              <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="{{ url_for('static', filename='images/trainers/slide1.jpg') }}" class="d-block w-100"
+                      alt="Slide 1">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/trainers/slide11.jpg') }}" class="d-block w-100"
+                      alt="Slide 2">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/trainers/slide12.jpg') }}" class="d-block w-100"
+                      alt="Slide 3">
+                  </div>
+                </div>
+                <!-- Controls (optional) -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                  data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                  data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </section>
+            <!-- FAQ Section -->
+            <section id="faq" class="faq p-5" style="background-color: #faf0c4;">
+              <h2 class="section-title">Frequently Asked Questions</h2>
+              <div class="accordion" id="faqAccordion">
+                <!-- Question 1 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      What services do you offer?
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      We offer a variety of spa services including grooming, health checkups, relaxation treatments, and
+                      more
+                      to
+                      keep your pet healthy and happy.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 2 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      How do I book an appointment?
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      You can easily schedule your grooming appointment by selecting your preferred date and time on our
+                      website. Just fill out the booking form and confirm your appointment.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 3 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      What are your operating hours?
+                    </button>
+                  </h2>
+                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Our operating hours are from 9 AM to 6 PM, Monday to Saturday. We are closed on Sundays.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 4 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                      Do you offer pet pick-up and delivery?
+                    </button>
+                  </h2>
+                  <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Yes, we offer pick-up and delivery services for your pets within a 10-mile radius. Please contact
+                      us for
+                      more
+                      details.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 5 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                      Are your groomers trained professionals?
+                    </button>
+                  </h2>
+                  <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Yes, all of our groomers are highly trained and experienced professionals who love working with
+                      pets.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 6 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                      Can I accompany my pet during the grooming session?
+                    </button>
+                  </h2>
+                  <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Due to safety and comfort reasons, we ask that you leave your pet with our professional groomers.
+                      However, you
+                      are welcome to stay in our waiting area.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 7 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingSeven">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                      Do you offer emergency services?
+                    </button>
+                  </h2>
+                  <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      We do not offer emergency services, but we can recommend local clinics for urgent care needs.
+                    </div>
+                  </div>
+                </div>
+                <!-- Question 8 -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingEight">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                      Can I make changes to my booking after it's confirmed?
+                    </button>
+                  </h2>
+                  <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Yes, you can modify your booking by logging into your account and selecting "Edit Appointment"
+                      before
+                      the
+                      scheduled time.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="carousel container" style="background-color: #faf0c4;">
+              <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="{{ url_for('static', filename='images/trainers/output1.jpg') }}" class="d-block w-100"
+                      alt="Slide 1">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/trainers/output2.jpg') }}" class="d-block w-100"
+                      alt="Slide 2">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/trainers/output3.jpg') }}" class="d-block w-100"
+                      alt="Slide 3">
+                  </div>
+                </div>
+              </div>
+              <!-- Controls (optional) -->
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </section>
+            <section id="reviews" class="container my-5 " style="background-color: #faf0c4;">
+              <h2 class="text-center mb-4">What Our Happy Pet Parents Say</h2>
+              <div class="row">
+                <!-- Review 1 -->
+                <div class="col-md-4 col-sm-6 mb-4 ">
+                  <div class="card review-card p-3">
+                    <div class="row g-0 align-items-center">
+                      <div class="col-4">
+                        <img src="{{ url_for('static', filename='images/trainer18.avif') }}"
+                          class="card-img-top img-fluid rounded-circle p-2" alt="Customer Image">
+                      </div>
+                      <div class="col-8">
+                        <div class="card-body p-2">
+                          <h6 class="card-title mb-1">Jane Doe</h6>
+                          <div class="d-flex align-items-center mb-1">
+                            <span class="text-warning me-2">★</span>
+                            <small class="text-muted">4.5/5</small>
+                          </div>
+                          <p class="card-text small">"Amazing grooming service! My dog looks great."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="col-md-4 col-sm-6 mb-4 ">
+                  <div class="card review-card p-3">
+                    <div class="row g-0 align-items-center">
+                      <div class="col-4">
+                        <img src="{{ url_for('static', filename='images/trainer17.avif') }}"
+                          class="card-img-top img-fluid rounded-circle p-2" alt="Customer Image">
+                      </div>
+                      <div class="col-8">
+                        <div class="card-body p-2">
+                          <h6 class="card-title mb-1">John Smith</h6>
+                          <div class="d-flex align-items-center mb-1">
+                            <span class="text-warning me-2">★</span>
+                            <small class="text-muted">3.5/5</small>
+                          </div>
+                          <p class="card-text small">"Friendly staff and great massage therapy.Great Help"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="col-md-4 col-sm-6 mb-4 ">
+                  <div class="card review-card p-3">
+                    <div class="row g-0 align-items-center">
+                      <div class="col-4">
+                        <img src="{{ url_for('static', filename='images/trainer19.webp') }}"
+                          class="card-img-top img-fluid rounded-circle p-2" alt="Customer Image">
+                      </div>
+                      <div class="col-8">
+                        <div class="card-body p-2">
+                          <h6 class="card-title mb-1">Emily Harris</h6>
+                          <div class="d-flex align-items-center mb-1">
+                            <span class="text-warning me-2">★</span>
+                            <small class="text-muted">5/5</small>
+                          </div>
+                          <p class="card-text small">"Professional health checkup. Highly recommended!"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Contact Us Section -->
+            <section id="contact-us" class="container my-5 p-5" style="background-color: #faf0c4;">
+              <div class="row align-items-center">
+                <!-- Contact Us Form -->
+                <div class="col-md-6 p-4">
+                  <form>
+                    <h2 class="text-center">Contact Us</h2>
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Full Name</label>
+                      <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="message" class="form-label">Message</label>
+                      <textarea class="form-control" id="message" rows="4" required></textarea>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary"
+                        style="background-color: #ffec9f; border:#ffec9f">Submit</button>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Our Location Section -->
+                <div class="col-md-6 p-4 text-center">
+                  <h4>Our Location</h4>
+                  <img src="{{ url_for('static', filename='images/trainers/locationabove.webp') }}" alt="Services image"
+                    id="service_img" style="max-width: 100%; border-radius: 8px;">
+                  <p>Pet Haven Infosys, 12345</p>
+                  <p>Phone: (123) 456-7890</p>
+                  <p>Email: support@pethaven.com</p>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="container-fluid ">
+    <div class="container-fluid">
+      <div class="row justify-content-between">
+        <div class="col-md-3 footer-column">
+          <h5>Quick Links</h5>
+          <a href="#">Home</a>
+          <a href="#">Reviews</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="col-md-3 footer-column p-5">
+          <h5>Contact Us</h5>
+          <p> Pet Haven </p>
+          <p>Infosys, 12345</p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Email: support@pethaven.com</p>
+        </div>
+        <div class="col-md-3 footer-column p-2">
+          <h5>Follow Us</h5>
+          <div class="social-icons">
+            <i class="fab fa-facebook-f p-2"></i>
+            <i class="fab fa-instagram p-2"></i>
+            <i class="fab fa-linkedin p-2"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+<!-- Add Trainer Modal -->
+<div class="modal fade" id="addTrainerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Trainer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addTrainerForm" action="/add_trainer" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="addTrainerImage" class="form-label">Trainer Image</label>
+            <input type="file" class="form-control" id="addTrainerImage" name="image" required>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerName" class="form-label">Trainer Name</label>
+            <input type="text" class="form-control" id="addTrainerName" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerExperience" class="form-label">Trainer Experience</label>
+            <input type="text" class="form-control" id="addTrainerExperience" name="experience" required>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerServiceProvided" class="form-label">Service Provided</label>
+            <select class="form-select" id="addTrainerServiceProvided" name="service_provided_id" required>
+              {% for service in service_list %}
+              <option value="{{ service.id }}">{{ service.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="addTrainerDescription" name="description" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerLocation" class="form-label">Trainer Location</label>
+            <input type="text" class="form-control" id="addTrainerLocation" name="location" required>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerCost" class="form-label">Trainer Cost</label>
+            <input type="text" class="form-control" id="addTrainerCost" name="cost" required>
+          </div>
+          <div class="mb-3">
+            <label for="addTrainerAvailability" class="form-label">Availability</label>
+            <select class="form-select" id="addTrainerAvailability" name="availability" required>
+              <option value="1">Available</option>
+              <option value="0">Not Available</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" form="addTrainerForm" class="btn btn-primary">Add Trainer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Edit Trainer Modal -->
+  <div class="modal fade" id="editServiceModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Trainer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editServiceForm" action="/edit_trainer" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="editTrainerId" name="service_provider_id">
+            <div class="mb-3">
+              <label for="editServiceImage" class="form-label">Trainer Image</label>
+              <input type="file" class="form-control" id="editTrainerImage" name="image">
+            </div>
+            <div class="mb-3">
+              <label for="editTrainerName" class="form-label">Trainer Name</label>
+              <input type="text" class="form-control" id="editTrainerName" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label for="editTrainerExperience" class="form-label">Trainer Experience</label>
+              <input type="text" class="form-control" id="editTrainerExperience" name="experience" required>
+            </div>
+            <div class="mb-3">
+              <label for="editTrainerServiceProvided" class="form-label">Service Provided</label>
+              <!-- <textarea class="form-control" id="editTrainerServiceProvided" name="service_provided_id" rows="3"
+                required></textarea> -->
+              <select class="form-select" id="editTrainerServiceProvided" name="service_provided_id" required>
+                <!-- <option value="1">Grooming</option>
+                <option value="2">Health Checkup</option>
+                <option value="3">Relaxation Treatments</option>
+                <option value="4">Training</option> -->
+
+                {%for service in service_list%}
+                <option value="{{service.id}}">{{service.name}}</option>
+                {%endfor%}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editTrainerDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="editTrainerDescription" name="description" rows="3"
+                required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="editTrainerLocation" class="form-label">Trainer location</label>
+              <input type="text" class="form-control" id="editTrainerLocation" name="location" required>
+            </div>
+            <div class="mb-3">
+              <label for="editTrainerCost" class="form-label">Trainer Cost</label>
+              <input type="text" class="form-control" id="editTrainerCost" name="cost" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="editServiceForm" class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Add Trainer Form Submission
+      document.getElementById('addTrainerForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+    
+        try {
+          const response = await fetch('/add_trainer', {
+            method: 'POST',
+            body: formData
+          });
+    
+          if (response.ok) {
+            location.reload();
+          } else {
+            const error = await response.text();
+            alert('Error adding trainer: ' + error);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error adding trainer');
+        }
+      });
+    
+    
+      // Edit Trainer Form Submission
+      document.getElementById('editServiceForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const trainerId = document.getElementById('editTrainerId').value;
+    
+        try {
+          const response = await fetch(`/edit_trainer/${trainerId}`, {
+            method: 'POST',
+            body: formData
+          });
+    
+          if (response.ok) {
+            location.reload();
+          } else {
+            alert('Error updating trainer');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error updating trainer');
+        }
+      });
+              // Delete Trainer Handler
+      document.querySelectorAll('.delete-service').forEach(button => {
+        button.addEventListener('click', async function (e) {
+          if (confirm('Are you sure you want to delete this trainer?')) {
+            const trainerId = this.dataset.serviceId;
+            try {
+              const response = await fetch(`/delete_trainer/${trainerId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+
+              if (response.ok) {
+                location.reload();
+              } else {
+                alert('Error deleting trainer');
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              alert('Error deleting trainer');
+            }
+          }
+        });
+      });
+    });
+  
+    
+      // Edit Service Form Submission
+      document.getElementById('editServiceForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const trainerId = document.getElementById('editTrainerId').value;
+
+        try {
+          const response = await fetch(`/edit_trainer/${trainerId}`, {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            location.reload();
+          } else {
+            alert('Error updating service');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error updating service');
+        }
+      });
+
+  
+    // Function to populate edit modal
+    // const services_list = {{ service_list | tojson}};
+    function populateEditModal(service_provider_id, name, exp, service, description, location, cost) {
+      document.getElementById('editTrainerId').value = service_provider_id;
+      document.getElementById('editTrainerName').value = name;
+      document.getElementById('editTrainerExperience').value = exp;
+      document.getElementById('editTrainerDescription').value = description;
+      document.getElementById('editTrainerLocation').value = location;
+      document.getElementById('editTrainerCost').value = cost;
+      document.getElementById('editTrainerServiceProvided').value = service;
+
+      console.log(service_provider_id, name, exp, service, description, location, cost);
+    }
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>

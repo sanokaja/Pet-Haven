@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Event</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555555;
+            font-weight: bold;
+        }
+        .form-container input,
+        .form-container textarea,
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-container textarea {
+            resize: vertical;
+        }
+        .form-container input:focus,
+        .form-container textarea:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+        }
+        .form-container button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add Event</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="event-name">Event Name</label>
+            <input type="text" id="event-name" name="event-name" required>
+
+            <label for="event-description">Event Description</label>
+            <textarea id="event-description" name="event-description" rows="4" required></textarea>
+
+            <label for="event-price">Event Price</label>
+            <input type="number" id="event-price" name="event-price" required>
+
+            <label for="event-date">Event Date</label>
+            <input type="date" id="event-date" name="event-date" required>
+
+            <label for="event-venue">Event Venue</label>
+            <input type="text" id="event-venue" name="event-venue" required>
+
+            <label for="event-image">Event Image</label>
+            <input type="file" id="event-image" name="event-image" required>
+
+            <button type="submit">Add Event</button>
+        </form>
+    </div>
+</body>
+</html>

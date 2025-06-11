@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset some default styling */
+        body, h1, h5, p {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #032241;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header nav {
+            margin-top: 10px;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        header nav a.active {
+            text-decoration: underline;
+        }
+
+        /* Main content area */
+        .container {
+            margin-top: 50px;
+            padding: 0 15px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #032241;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #032241;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .event-icon {
+            font-size: 1.5rem;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .navbar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .navbar a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+        .alert-container {
+    margin: 20px 0;
+}
+
+.alert {
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.alert.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.alert .btn-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: inherit;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.alert .btn-close:hover {
+    color: #000;
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Animation for smooth appearance */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .status-circle {
+        width: 13px;
+        height: 13px;
+        border: 1px solid ; /* Black border for the circle */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+    .status-circle .status-active {
+        border: #36db5d;
+
+    }
+    .status-circle .status-inactive{
+        border: red;
+    }
+    .status-active .status-dot {
+        background-color: #36db5d; /* Green dot for active */
+    }
+
+    .status-inactive .status-dot {
+        background-color: #dc3545; /* Red dot for inactive */
+    }
+
+ 
+
+
+
+.payment-pending {
+        color: #ff0000; /* Bright red */
+        font-weight: bold;
+        background-color: #ffe6e6; /* Light red background */
+        padding: 5px;
+        border-radius: 4px;
+        animation: highlight 1s infinite; /* Blinking animation */
+    }
+
+    @keyframes highlight {
+        0% { background-color: #ffe6e6; }
+        50% { background-color: #ffcccc; }
+        100% { background-color: #ffe6e6; }
+    }
+/* Apply this to the parent container */
+.parent-container {
+  display: flex;
+  justify-content: center;  /* Horizontally center */
+  align-items: center;      /* Vertically center */
+  height: 100vh;            /* Make the container take up the full height of the viewport */
+}
+
+/* Optional: Style for the form */
+form {
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Optional: Style for the button */
+button {
+  display: block;
+  margin: 0 auto;  /* Center button inside the form */
+}
+
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Events</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="{{ url_for('competition_page') }}">Events</a>
+            <a href="/my-events" class="active">My Events</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    {% if category == 'my_events' %}
+                        <div style="background-color: #007BFF;" class="alert alert-{{ category }} alert-dismissible" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="closeAlert(this)"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+       <!-- Incomplete Registrations -->
+<h2><strong>Incomplete Registrations</strong></h2>
+<div class="row">
+    {% set incomplete_registrations = [] %}
+    {% for registration in registrations %}
+        {% if registration.status == 'Please complete payment process' %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="event-icon">🎉</span>{{ registration.competition_name }}</h5>
+                        <p class="card-text"><span class="event-icon">🐶</span><strong>Dog Name:</strong> {{ registration.dog_name }}</p>
+                        <p class="card-text"><span class="event-icon">🐕</span><strong>Breed:</strong> {{ registration.breed }}</p>
+                        <p class="card-text"><span class="event-icon">🎂</span><strong>Age:</strong> {{ registration.age }}</p>
+                        {% if registration.achievements %}
+                        <p class="card-text"><span class="event-icon">🏆</span><strong>Achievements:</strong> {{ registration.achievements }}</p>
+                        {% endif %}
+                        <p class="card-text">
+                            <span class="event-icon">💰</span>
+                            <strong>Price:</strong> ₹{{ registration.event.price if registration.event else "N/A" }}
+                        </p>
+                        <p class="card-text">
+                            <strong>Payment Status:</strong> 
+                            <span class="payment-pending">{{ registration.status }}</span>
+                        </p>
+                        <p class="card-text">
+                            <span class="status-indicator">
+                                {% if registration.event and registration.event.is_active %}
+                                    <span class="status-circle status-active">
+                                        <span class="status-dot"></span>
+                                    </span> Active
+                                {% else %}
+                                    <span class="status-circle status-inactive">
+                                        <span class="status-dot"></span>
+                                    </span> Inactive
+                                {% endif %}
+                            </span>
+                        </p>
+                        <a href="/edit/{{ registration.id }}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="/delete/{{ registration.id }}" class="btn btn-danger" 
+                            onclick="return confirm('Are you sure you want to delete this registration?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% set incomplete_registrations = incomplete_registrations + [registration.id] %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+    <!-- Add to Cart Button -->
+    <form action="/add_item_to_cart" method="POST" >
+        {% for reg in registrations %}
+        <input type="hidden" name="registration_ids" value="{{ reg.id }}">
+    {% endfor %}
+    
+        <button type="submit" class="btn btn-primary">
+            Add All to Cart
+        </button>
+    </form
+
+        <!-- Completed Registrations -->
+         <br>
+         <br>
+        <h2><strong>Completed Registrations</strong></h2>
+        <div class="row">
+            {% for registration in registrations %}
+                {% if registration.status != 'Please complete payment process' %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><span class="event-icon">🎉</span>{{ registration.competition_name }}</h5>
+                            <p class="card-text"><span class="event-icon">🐶</span><strong>Dog Name:</strong> {{ registration.dog_name }}</p>
+                            <p class="card-text"><span class="event-icon">🐕</span><strong>Breed:</strong> {{ registration.breed }}</p>
+                            <p class="card-text"><span class="event-icon">🎂</span><strong>Age:</strong> {{ registration.age }}</p>
+                            {% if registration.achievements %}
+                            <p class="card-text"><span class="event-icon">🏆</span><strong>Achievements:</strong> {{ registration.achievements }}</p>
+                            {% endif %}
+                            <p class="card-text">
+                                <span class="event-icon">💰</span>
+                                <strong>Price:</strong> ₹{{ registration.event.price }}
+                            </p>
+                            <p class="card-text">
+                
+                                <strong>Payment Status:</strong> 
+                                {% if registration.status == 'Please complete payment process' %}
+                                    <span class="payment-pending">{{ registration.status }}</span>
+                                {% else %}
+                                    {{ registration.status }}
+                                {% endif %}
+                            </p>
+                            
+                            <p class="card-text">
+                                
+                                <span class="status-indicator">
+                                    {% if registration.event.is_active %}
+                                        <span class="status-circle status-active">
+                                            <span class="status-dot"></span>
+                                        </span> Active
+                                    {% else %}
+                                        <span  class="status-circle status-inactive">
+                                            <span class="status-dot"></span>
+                                        </span> Inactive
+                                    {% endif %}
+                                </span>
+                            </p>
+                            
+                            <a href="/edit/{{ registration.id }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="/delete/{{ registration.id }}" class="btn btn-danger" 
+                                onclick="return confirm('Are you sure you want to delete this registration?');">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function closeAlert(element) {
+            var alertElement = element.closest('.alert');
+            alertElement.style.opacity = 0;
+            setTimeout(function() {
+                alertElement.style.display = 'none';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
