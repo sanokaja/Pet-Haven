@@ -43,15 +43,15 @@
 ## 📂 Project Structure
 
 integrated-pet-haven/
-│
-├── static/ # CSS and images
-├── templates/ # HTML templates (Jinja2)
-├── uploads/ # Uploaded pet images
-├── app.py # Main application
-├── data.py # Data handling logic
-├── test_app.py # Test file
-├── requirements.txt # Dependencies
-└── README.md # You're here!
+-│
+-├── static/ # CSS and images
+-├── templates/ # HTML templates (Jinja2)
+-├── uploads/ # Uploaded pet images
+-├── app.py # Main application
+-├── data.py # Data handling logic
+-├── test_app.py # Test file
+-├── requirements.txt # Dependencies
+-└── README.md # You're here!
 
 ---
 
@@ -71,25 +71,22 @@ integrated-pet-haven/
 
 ---
 
-👨‍💻 Author
-Sanofar Nasreen
-Frontend & Full Stack Developer
-📍 Trichy, India
-🔗 [LinkedIn](https://linkedin.com/in/sanofar-nasreen)  
-🔗 [GitHub](https://github.com/sanokaja)
+## 👨‍💻 Author
 
+-Sanofar Nasreen
+-Frontend & Full Stack Developer
+-📍 Trichy, India
+-🔗 [LinkedIn](https://linkedin.com/in/sanofar-nasreen)  
+-🔗 [GitHub](https://github.com/sanokaja)
 
-💡 Why This Project Matters
-This project demonstrates:
+---
+## 💡 Why This Project Matters
 
-Real-world full-stack web development skills
+-✅This project demonstrates:
+-✅Real-world full-stack web development skills
+-✅Clean architecture using Flask & SQLAlchemy
+-✅Responsive and accessible design
+-✅Functional admin-user separation
+-✅Ability to handle both UI and backend development
 
-Clean architecture using Flask & SQLAlchemy
-
-Responsive and accessible design
-
-Functional admin-user separation
-
-Ability to handle both UI and backend development
-
-✅ Ideal for startups, internships, and companies looking for developers who can build practical, user-centered solutions!
+Ideal for startups, internships, and companies looking for developers who can build practical, user-centered solutions!
