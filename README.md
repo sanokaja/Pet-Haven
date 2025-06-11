@@ -42,7 +42,7 @@
 
 ## 📂 Project Structure
 
-integrated-pet-haven/
+**integrated-pet-haven/**
 -│
 -├── static/ # CSS and images
 -├── templates/ # HTML templates (Jinja2)
@@ -73,7 +73,7 @@ integrated-pet-haven/
 
 ## 👨‍💻 Author
 
--Sanofar Nasreen
+**Sanofar Nasreen**
 -Frontend & Full Stack Developer
 -📍 Trichy, India
 -🔗 [LinkedIn](https://linkedin.com/in/sanofar-nasreen)  
@@ -82,7 +82,7 @@ integrated-pet-haven/
 ---
 ## 💡 Why This Project Matters
 
--✅This project demonstrates:
+**This project demonstrates:**
 -✅Real-world full-stack web development skills
 -✅Clean architecture using Flask & SQLAlchemy
 -✅Responsive and accessible design
