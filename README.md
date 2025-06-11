@@ -52,6 +52,7 @@ integrated-pet-haven/
 ├── test_app.py # Test file
 ├── requirements.txt # Dependencies
 └── README.md # You're here!
+```
 
 ---
 
