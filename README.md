@@ -41,7 +41,7 @@
 ---
 
 ## 📂 Project Structure
- ```bash
+ ```text
 integrated-pet-haven/
 │
 ├── static/ # CSS and images
